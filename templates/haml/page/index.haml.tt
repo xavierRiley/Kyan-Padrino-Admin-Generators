@@ -1,0 +1,52 @@
+#content_header.block
+  %h1
+    =pat(:all)
+    =mt(:clients)
+  %ul.actions
+    -# %li.first.active=link_to pat(:list), url(:<%= @orm.name_plural %>, :index)
+    %li=link_to pat(:new), url(:<%= @orm.name_plural %>, :new), :class => "create_button"
+#content_wrap.block
+  .content
+    .inner
+      %table.table
+        %thead
+          %tr
+            <%- @orm.columns.each_with_index do |column, i| -%>
+            <%- unless @ignoreFields.nil? == false and @ignoreFields.include? column.name -%>
+            %th.header<%= ".first" if i==0 %>=mat(:<%= @orm.name_singular %>, :<%= column.name %>)
+            <%- end -%>
+            <%- end -%>
+            %th.last="&nbsp;"
+        %tbody
+          -@<%= @orm.name_plural %>.each_with_index do |<%= @orm.name_singular %>, index|
+            %tr{:class => (index % 2 == 0 ? 'odd' : 'even')}
+              <%- @orm.columns.each_with_index do |column, i| -%>
+              <%- unless @ignoreFields.nil? == false and @ignoreFields.include? column.name -%>
+              <%- if column.name.to_s.include?('_file') or column.name.to_s.include?('_img') -%>
+              -if <%=  @orm.name_singular.to_s + '.' + column.name %>.class == Uploader and not <%=  @orm.name_singular.to_s + '.' + column.name %>.url.nil?
+                %td<%= ".first" if i==0 %>
+                  -if <%= @orm.name_singular %>.<%= column.name %>.versions.include? :admin_thumb
+                    %img{:width=>80,:src=><%= @orm.name_singular %>.<%= column.name %>.admin_thumb.url}
+                  -else
+                    %img{:width=>80,:src=><%= @orm.name_singular %>.<%= column.name %>.url}
+                -else
+                  %td<%= ".first" if i==0 %>=<%= @orm.name_singular %>.<%= column.name %>.to_s
+              <%- elsif column.type.to_s.include?('boolean') -%>
+              %td.fixed<%= ".first" if i==0 %>
+                -if <%= @orm.name_singular %>.<%= column.name %>
+                  =link_to image_tag('/admin/newimg/tick.png', :alt => "Click to toggle on/off"), [:toggle, :<%= @orm.name_plural %>, :<%= column.name %>, <%= @orm.name_singular %>.id].join("/"), :class => "tick_link", :id => "notick"
+                -else
+                  =link_to image_tag('/admin/newimg/notick.png', :alt => "Click to toggle on/off"), [:toggle, :<%= @orm.name_plural %>, :<%= column.name %>, <%= @orm.name_singular %>.id].join("/"), :class => "tick_link", :id => "tick"
+              <%- else-%>
+              %td<%= ".first" if i==0 %>=<%= @orm.name_singular %>.<%= column.name %>
+              <%- end -%>
+              <%- end -%>
+              <%- end -%>
+              %td.fixed.last
+                =button_to pat(:edit), url(:<%= @orm.name_plural %>, :edit, :id => <%= @orm.name_singular %>.id), :method => :get, :class => :button_to
+                ="|"
+                =button_to pat(:delete), url(:<%= @orm.name_plural %>, :destroy, :id => <%= @orm.name_singular %>.id), :method => :delete, :class => :button_to, :onsubmit => "return confirm('#{pat(:confirm)}')"
+      .actions-bar.wat-cf
+        .actions="&nbsp;"
+
+-# content_for :sidebar, partial("base/sidebar")

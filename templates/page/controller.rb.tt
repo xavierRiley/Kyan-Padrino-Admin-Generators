@@ -1,0 +1,47 @@
+Admin.controllers :<%= @orm.name_plural %> do
+
+  get :index do
+    @<%= @orm.name_plural %> = <%= @orm.all %>
+    render '<%= @orm.name_plural %>/index'
+  end
+
+  get :new do
+    @<%= @orm.name_singular %> = <%= @orm.build %>
+    render '<%= @orm.name_plural %>/new'
+  end
+
+  post :create do
+    @<%= @orm.name_singular %> = <%= @orm.build("params[:#{@orm.name_singular}]") %>
+    if <%= @orm.save %>
+      flash[:notice] = '<%= @orm.klass_name %> was successfully created.'
+      redirect url(:<%= @orm.name_plural %>, :index)
+    else
+      render '<%= @orm.name_plural %>/new'
+    end
+  end
+
+  get :edit, :with => :id do
+    @<%= @orm.name_singular %> = <%= @orm.find("params[:id]") %>
+    render '<%= @orm.name_plural %>/edit'
+  end
+
+  put :update, :with => :id do
+    @<%= @orm.name_singular %> = <%= @orm.find("params[:id]") %>
+    if <%= @orm.update_attributes("params[:#{@orm.name_singular}]") %>
+      flash[:notice] = '<%= @orm.klass_name %> was successfully updated.'
+      redirect url(:<%= @orm.name_plural %>, :index)
+    else
+      render '<%= @orm.name_plural %>/edit'
+    end
+  end
+
+  delete :destroy, :with => :id do
+    <%= @orm.name_singular %> = <%= @orm.find("params[:id]") %>
+    if <%= @orm.destroy %>
+      flash[:notice] = '<%= @orm.klass_name %> was successfully destroyed.'
+    else
+      flash[:error] = 'Unable to destroy <%= @orm.klass_name %>!'
+    end
+    redirect url(:<%= @orm.name_plural %>, :index)
+  end
+end

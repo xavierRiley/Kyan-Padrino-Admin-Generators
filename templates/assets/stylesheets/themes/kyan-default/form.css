@@ -1,0 +1,148 @@
+/*-------------------------*//*global form styles*//*-------------------------*/
+/*/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* define global form elements*/
+/*/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////*/
+form{
+	text-align:left;
+}
+
+fieldset{
+	padding:12px;
+	border:none;
+	border-top:1px solid #e0dfdf;
+	background-color:#f6f6f6;
+	margin:0 0 7px;
+}
+
+legend{
+	color:#000;
+}
+
+textarea{
+	padding:2px;
+	width:600px;	
+	height:15em;
+	font-family:verdana,arial,helvetica,sans-serif;
+	font-size:1.1em;
+	margin:0 0 5px;
+}
+
+label{
+	display:block;
+	padding:0 5px 0 0;
+	font-size:1.2em;
+	line-height:1.2;
+	margin:5px 0 5px;
+	color:#333;
+	text-align:left;
+}
+
+label span{
+	color:#707070;
+	font-size:0.95em;
+}
+
+input{
+	padding:2px;
+	width:600px;
+	margin:0 0 5px;
+}
+	
+label input{
+	width:auto;
+	margin:-3px 6px 0 0;
+}	
+
+input.short, select.short{
+	width:100px;	
+}
+	
+select{
+	padding:2px;
+	width:608px;
+	margin:0 0 3px;
+}
+
+.submit{
+	width:auto;
+	float:left;
+	display:inline;
+	padding:0;
+	margin-right: 5px;
+}
+
+.radio{
+	width:auto;
+	float:left;
+}
+
+
+.filter{
+	float:right;
+	vertical-align:middle;
+	
+}
+
+.filter label{
+	float:left;
+	margin:4px 0 0;
+	font-size:1.1em;
+}
+
+.filter select, .filter input{
+	width:150px;
+	margin:0;
+	font-size:1em;
+	vertical-align:top;
+}
+
+form#admin_login_form{
+	clear:both;
+}
+
+form#admin_login_form fieldset{
+	padding:20px;
+	border:1px solid #e0dfdf;
+	background-color:#f6f6f6;
+	margin:0;
+}
+
+form#admin_login_form input{
+	width:292px;
+	margin-bottom:10px;
+}
+
+form#admin_login_form input.submit{
+	background:url(/admin/newimg/button_login.gif) no-repeat;
+	height:23px;
+	width:60px;
+	margin:0;
+}
+
+td.fixed{
+	width:100px;
+}
+
+.move_position{
+	padding:2px;
+}
+
+.form_row{
+	padding-bottom:10px;
+}
+
+.checksector
+	{
+	width: 100px;
+	}
+	
+.checksector input{
+	width:20px;
+}
+
+.checkbox{
+	width:15px;
+}

@@ -1,0 +1,18 @@
+<div id="content_header" class="block">
+  <h1 class="title"><%%= pat(:new) %> <%%= mt(:<%= @orm.name_singular %>) %></h1>
+  <ul class="actions wat-cf">
+    <li class="first"><%%= link_to "Cancel", url(:<%= @orm.name_plural %>, :index), :class=>"cancel_button" %></li>
+  </ul>
+</div>
+<div id="content_wrap">
+  <div class="content">
+    <script type="text/javascript">
+      $('document').ready(function() {
+        $('#<%= @orm.name_singular %>').validate();
+      });
+    </script>
+    <%% form_for :<%= @orm.name_singular %>, url(:<%= @orm.name_plural %>, :create, :id => @<%= @orm.name_singular %>.id), :multipart => true, :id => :<%= @orm.name_singular %>, :class => 'form edit' do |f| %>
+      <%%= partial "<%= @orm.name_plural %>/form", :locals => { :f => f } %>
+    <%% end %>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div id="primary">
+  <%- @orm.column_fields.each do |column| -%>
+    <fieldset id="<%= column[:name] %>" class="kyanadmin">
+      <%%= f.label :<%= column[:name] %> %>
+      <%%= f.error_message_on :<%= column[:name] %> %>
+      <%- if column[:name].to_s.index('_file') or column[:name].to_s.index('_img') -%>
+        <%%- if @<%=  @orm.name_singular.to_s + '.' + column[:name] %>.class == Uploader and not @<%=  @orm.name_singular.to_s + '.' + column[:name] %>.url.nil? -%>
+          <%%- if @<%= @orm.name_singular %>.<%= column[:name] %>.versions.include? :admin_thumb -%>
+            <img class="preview admin_thumb" width="80" src="<%%= @<%= @orm.name_singular %>.<%= column[:name] %>.admin_thumb.url %>" />
+            <br />
+            <br />
+            <span>Upload Replacement</span>
+            <br />
+            <br />
+            <%%= f.file_field :<%= column[:name]%>, :class => :upload  %>
+            <br />
+            <br />
+            <%%= f.check_box :remove_<%= column[:name] %> %>
+            <span>Remove image?</span>
+            <br>
+          <%%- else -%>
+            <img class="preview admin_thumb" width="80" src="<%%= @<%= @orm.name_singular %>.<%= column[:name] %>.url %>" />
+            <br />
+            <br />
+            <span>Upload Replacement</span>
+            <br />
+            <br />
+            <%%= f.file_field :<%= column[:name]%>, :class => :upload  %>
+            <br />
+            <br />
+            <%%= f.check_box :remove_<%= column[:name] %> %>
+            <span>Remove image?</span>
+            <br>
+          <%%- end -%>
+        <%%- else -%>
+          <%%= f.file_field :<%= column[:name] %>, :class => :upload <%= column[:required] ? ', :class=>"required"' : '' %> %>
+        <%%- end -%>
+      <%- elsif column[:name].to_s.index('_mce') -%>
+        <script type="text/javascript">
+          window.onload = function() {
+          var oFCKeditor = new FCKeditor('<%= @orm.name_singular %>_<%= column[:name] %>');
+          oFCKeditor.BasePath = "/admin/javascripts/fckeditor/";
+          oFCKeditor.ReplaceTextarea();
+          }
+        </script>
+        <%%= f.text_area :<%= column[:name] %>, :class => ['text_area', 'mce'<%= column[:required] ? ", 'required'" : '' %>] %>
+      <%- elsif column[:name].to_s.index('_date') or column[:field_type] == :datetime -%>
+        <script type="text/javascript">
+          $('document').ready(function() {
+            $().dateSelectBoxes($('#<%= column[:name] %>_year'),$('#<%= column[:name] %>_month'),$('#<%= column[:name] %>_day'),true);
+            $('.date_selector select').change(function() {
+              $('input.<%= column[:name] %>').val($('#<%= column[:name] %>_year').val() + '-' + $('#<%= column[:name] %>_month').val() + '-' + $('#<%= column[:name] %>_day').val());
+            });
+          });
+        </script>
+        <div class="date_selector">
+          <%%= f.select :"<%= column[:name] %>_year", :id=>"<%= column[:name] %>_year", :options => (Time.now.year..1900).to_a.reverse!, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.year : Time.now.year) %>
+          <%%= f.select :"<%= column[:name] %>_month", :id=>"<%= column[:name] %>_month", :options => (1..12), :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.month : Time.now.month) %>
+          <%%= f.select :"<%= column[:name] %>_day", :id=>"<%= column[:name] %>_day", :options => (1..31), :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.day : Time.now.day) %>
+          <%%= f.hidden_field :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'date'<%= column[:required] ? ", 'required'" : '' %>].join(" ") %>
+        </div>
+      <%- elsif column[:field_type] == :boolean -%>
+        <div id="<%= column[:name] %>" class="group">
+          <%%= f.label :<%= column[:name]%> %>
+          <%%= f.error_message_on :<%= column[:name]%> %>
+          <%%= f.check_box :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'check_box'<%= column[:required] ? ", 'required'" : '' %>].join(" ") %>
+        </div>
+      <%- elsif column[:name].to_s == 'position' -%>
+          <%%= f.hidden_field :<%= column[:name] %>, :value => @<%= @orm.name_singular %>.position,:class => ['<%= column[:name] %>', 'position'].join(" ") %>
+      <%- else -%>
+        <%%= f.<%= column[:field_type] %> :<%= column[:name] %>, :class => :<%= column[:field_type] %><%= column[:required] ? ', :class=>"required"' : '' %> %>
+      <%- end -%>
+    </fieldset>
+  <%- end -%>
+  <div class="group navform wat-cf form_send">
+    <%%= f.image_submit "/admin/newimg/button_save.png", :class => :submit, :alt => "Save" %>
+    <%%= f.image_submit "/admin/newimg/button_cancel.png", :onclick => 'window.location="#{url(:<%= @orm.name_plural %>, :index)}";return false', :class => :submit %>
+  </div>
+</div>

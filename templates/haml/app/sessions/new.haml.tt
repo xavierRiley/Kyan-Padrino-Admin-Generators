@@ -1,0 +1,46 @@
+!!! Strict
+%html{:lang => "en", :xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}
+    %title Kyan Admin
+    =stylesheet_link_tag "themes/kyan-default/newcore"  
+    =javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js"
+  %body#admin_login
+    #login_container
+      #container
+        #header
+          #header_wrap
+            #header_title
+              %a#logo{:href=>"/admin"}
+              =link_to "Padrino Admin", url(:base_index), :id => 'cms_title'
+        #content
+          #content_main
+            #content_main
+              #login_box.block
+                .content.login
+                  .flash=[:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join
+                  -form_tag(url(:sessions, :create), :class => 'form login') do
+                    %fieldset
+                      .group.wat-cf
+                        .left
+                          %label.label.right Login
+                        .right=text_field_tag :email, :value => params[:email], :class => :text
+                      .group.wat-cf
+                        .left
+                          %label.label.right Password
+                        .right=password_field_tag :password, :value => params[:password], :class => :text
+                      -if Padrino.env == :development
+                        .group.wat-cf
+                          .left
+                            %label.label.right Bypass login?
+                          .right=check_box_tag :bypass
+                      .group.navform.wat-cf
+                        .right=image_submit_tag('/admin/newimg/button_login_big.png', :class => 'button submit')
+        #footer
+          .block
+            %p
+              Copyright &copy;
+              =Time.now.year
+              Your Site - Powered by
+              =link_to "Padrino v.#{Padrino.version}", "http://padrino.github.com", :target => :_blank
+        -# #sidebar=yield_content :sidebar

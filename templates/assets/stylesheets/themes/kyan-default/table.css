@@ -1,0 +1,41 @@
+table{
+	width:100%;
+	border-collapse:collapse;
+	text-align:left;
+	margin:0 0 15px;
+	font-size:1.1em;
+}
+
+th{
+		padding:5px 14px 10px;
+		font-weight:normal;
+		color:#000;
+}
+
+td{
+	padding:10px 14px;
+}
+
+th, td{
+	border-bottom:1px solid #e3e2e2;	
+}
+
+tr.odd td{
+	background-color:#f6f6f6;
+}
+
+tr.even td{
+	background-color:#fff;
+}
+
+tr.odd2 td{
+	background-color:#f6f6f6;
+}
+
+tr.even2 td{
+	background-color:#fff;
+}
+
+th.set{
+	width:100px;
+}

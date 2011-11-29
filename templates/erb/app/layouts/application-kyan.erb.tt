@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Kyan Admin</title>
+  <%%= stylesheet_link_tag "themes/kyan-default/newcore" %>
+  <%%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js" %>
+</head>
+<body>
+  <div id="container">
+    <div id="header">
+      <div id="header_wrap">
+      	<div id="header_title">
+          <a id="logo" href="/admin"></a>
+          <%%= link_to "Padrino Admin", url(:base_index), :id => 'cms_title' %>
+      	</div>
+        <ul id="nav_sub" class="wat-cf">
+          <li><%%= link_to pat(:profile), url(:accounts, :edit, :id => current_account.id) %></li>
+          <li><%%= button_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
+        </ul>
+      </div>
+      <div id="nav">
+        <div id="nav_wrap">
+          <ul class="wat-cf">
+            <%% project_modules.each do |project_module| %>
+            <li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
+            <%% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="content" class="wat-cf">
+      <div id="content_main">
+        <div class="flash">
+          <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+        </div>
+        <%%= yield %>
+      </div>
+      <div id="footer">
+        <div class="block">
+          <p>Copyright &copy; <%%= Time.now.year %> Your Site - Powered by <a href="http://padrino.github.com" target="_blank">Padrino v.<%%= Padrino.version %>.</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+!!! Strict
+%html{:lang => "en", :xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}
+    %title Padrino Admin
+    =stylesheet_link_tag :base, "themes/<%= options[:theme] %>/style"
+    =javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js"
+    :javascript
+        $('document').ready(function() {
+            var $adminForm = $('form.edit, form.create').first();
+
+            var rearrangeFields = function($formElem) {
+               var currentModel = $formElem.attr('id');
+               $('#main').append('<div id="groupContainer" class="hide"></div>');
+               $('#main fieldset').children('.group').appendTo('#groupContainer')
+               	$.getJSON('/admin/admin_configuration/config/' + currentModel + '/', function(json) {
+                   var $configJSON = json;
+                   var noOfFieldsets = $configJSON.length - 1;
+                   console.log(noOfFieldsets);
+                   for(i=0;i<=noOfFieldsets;i++) {
+                       var containNames = $configJSON[i].admin_configuration.contains;
+                       var noOfContainElems = containNames.length;
+                       var containElems = [];
+                       
+                       for(ci=1;ci<=noOfContainElems;ci++) {
+                          console.log(String(containNames[ci - 1]).length);
+                          if(String(containNames[ci - 1]).length > 1) {
+                          containElems.push('#groupContainer div.group#'+ containNames[ci - 1]);
+                          }
+                       }
+                       console.log('fieldset#'+$configJSON[i].admin_configuration.fieldset+'_fieldset');
+                       console.log(containElems.join(","));
+                       $('fieldset#'+$configJSON[i].admin_configuration.fieldset+'_fieldset').append(
+                           $(containElems.join(","))
+                       );
+                   }
+               });
+            };
+
+            rearrangeFields($adminForm);
+
+            $('form.edit fieldset, form.create fieldset').sortable({
+                axis:'y',
+                forceHelperSize:true,
+                forcePlaceholderSize:true,
+                connectWith: 'fieldset',
+                placeholder: 'drop_target',
+                stop: function(e,ui){
+                    var current = ui.item.closest('fieldset').children('.group');
+                    var pipeline = current.next();
+                    var currentModel = $('#main form:first').attr('id');
+                    var currentContainer = ui.item.closest('fieldset').attr('id').replace('_fieldset', '');
+                    var currentItems = ui.item.closest('fieldset').children('.group');
+                    var currentItemsLength = currentItems.length - 1; //to be used in a zero index so minus one
+                    var currentItemsString = [];
+                    for(i=0;i<=currentItemsLength;i++) {
+                       currentItemsString.push(currentItems[i].attributes.id.value); 
+                    }
+                    currentItemsString = currentItemsString.join("/");
+                    console.log(currentItemsString);
+                    //console.log('/admin/admin_configuration/contains/' + currentModel + '/' + currentItemsString);
+                    $.get('/admin/admin_configuration/contains/' + currentModel + '/' + currentContainer + '/' + currentItemsString, function(data) {
+                        var $notify = $('div.flash:first');
+                        $notify.html('<div class="message notice">' + data + '</div>');
+                        setTimeout(function() {$notify.html('');}, 2000);
+                    });
+                }
+            });
+        });
+  %body
+    #container
+      #header
+        %h1=link_to "Padrino Admin", url(:base_index)
+        #user-navigation
+          %ul.wat-cf
+            %li=link_to pat(:profile), url(:accounts, :edit, :id => current_account.id)
+            %li=button_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to
+        #main-navigation
+          %ul.wat-cf
+            -project_modules.each do |project_module|
+              %li{:class => ("active" if request.path_info =~ /^#{project_module.path}/)}
+                =link_to project_module.human_name, project_module.path("/admin")
+      #wrapper.wat-cf
+        .flash=[:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join
+        #main
+          =yield
+          #footer
+            .block
+              %p
+                Copyright &copy;
+                =Time.now.year
+                Your Site - Powered by
+                =link_to "Padrino v.#{Padrino.version}", "http://padrino.github.com", :target => :_blank
+        #sidebar=yield_content :sidebar

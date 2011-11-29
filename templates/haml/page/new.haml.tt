@@ -1,0 +1,16 @@
+#content_header.block
+  %h1
+  =pat(:new)
+  =mt(:<%= @orm.name_singular %>)
+  %ul.actions
+    %li.first=link_to 'Cancel', url(:<%= @orm.name_plural %>, :index)
+#content_wrap.block
+  .content
+    :javascript
+      $('document').ready(function() {
+        $('#<%= @orm.name_singular %>').validate();
+      });
+    -form_for :<%= @orm.name_singular %>, url(:<%= @orm.name_plural %>, :create, :id => @<%= @orm.name_singular %>.id), :multipart => true, :id => :<%= @orm.name_singular %>, :class => 'form edit' do |f|
+      =partial "<%= @orm.name_plural %>/form", :locals => { :f => f }
+
+-# content_for :sidebar, partial("base/sidebar")
