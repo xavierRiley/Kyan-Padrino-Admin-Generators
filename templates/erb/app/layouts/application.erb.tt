@@ -18,7 +18,10 @@
       <div id="main-navigation">
         <ul class="wat-cf">
           <%% project_modules.each do |project_module| %>
-            <li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name, project_module.path("/admin") %></li>
+            <%%- unless ['/snippets', '/style_overrides', '/seo_meta', '/accounts', '/publication_types', '/company_statuses', '/locations', '/categories'].include? project_module.path  -%>
+            <%%- if project_module.path == '/news_articles' then my_human_name = "News" else my_human_name = project_module.human_name end -%>
+              <li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name, project_module.path("/admin") %></li>
+            <%%- end ->
           <%% end %>
         </ul>
       </div>

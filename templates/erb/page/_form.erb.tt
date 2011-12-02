@@ -1,9 +1,11 @@
 <div id="primary">
   <%- @orm.column_fields.each do |column| -%>
+    <%- unless column[:name] == 'position' -%>
     <fieldset id="<%= column[:name] %>" class="kyanadmin">
-      <%%= f.label :<%= column[:name] %> %>
-      <%%= f.error_message_on :<%= column[:name] %> %>
+    <%- end -%>
       <%- if column[:name].to_s.index('_file') or column[:name].to_s.index('_img') -%>
+        <%%= f.label :<%= column[:name] %> %>
+        <%%= f.error_message_on :<%= column[:name] %> %>
         <%%- if @<%=  @orm.name_singular.to_s + '.' + column[:name] %>.class == Uploader and not @<%=  @orm.name_singular.to_s + '.' + column[:name] %>.url.nil? -%>
           <%%- if @<%= @orm.name_singular %>.<%= column[:name] %>.versions.include? :admin_thumb -%>
             <img class="preview admin_thumb" width="80" src="<%%= @<%= @orm.name_singular %>.<%= column[:name] %>.admin_thumb.url %>" />
@@ -36,6 +38,8 @@
           <%%= f.file_field :<%= column[:name] %>, :class => :upload <%= column[:required] ? ', :class=>"required"' : '' %> %>
         <%%- end -%>
       <%- elsif column[:name].to_s.index('_mce') -%>
+        <%%= f.label :<%= column[:name] %> %>
+        <%%= f.error_message_on :<%= column[:name] %> %>
         <script type="text/javascript">
           window.onload = function() {
           var oFCKeditor = new FCKeditor('<%= @orm.name_singular %>_<%= column[:name] %>');
@@ -45,6 +49,8 @@
         </script>
         <%%= f.text_area :<%= column[:name] %>, :class => ['text_area', 'mce'<%= column[:required] ? ", 'required'" : '' %>] %>
       <%- elsif column[:name].to_s.index('_date') or column[:field_type] == :datetime -%>
+        <%%= f.label :<%= column[:name] %> %>
+        <%%= f.error_message_on :<%= column[:name] %> %>
         <script type="text/javascript">
           $('document').ready(function() {
             $().dateSelectBoxes($('#<%= column[:name] %>_year'),$('#<%= column[:name] %>_month'),$('#<%= column[:name] %>_day'),true);
@@ -60,6 +66,8 @@
           <%%= f.hidden_field :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'date'<%= column[:required] ? ", 'required'" : '' %>].join(" ") %>
         </div>
       <%- elsif column[:field_type] == :boolean -%>
+        <%%= f.label :<%= column[:name] %> %>
+        <%%= f.error_message_on :<%= column[:name] %> %>
         <div id="<%= column[:name] %>" class="group">
           <%%= f.label :<%= column[:name]%> %>
           <%%= f.error_message_on :<%= column[:name]%> %>
@@ -68,9 +76,13 @@
       <%- elsif column[:name].to_s == 'position' -%>
           <%%= f.hidden_field :<%= column[:name] %>, :value => @<%= @orm.name_singular %>.position,:class => ['<%= column[:name] %>', 'position'].join(" ") %>
       <%- else -%>
+        <%%= f.label :<%= column[:name] %> %>
+        <%%= f.error_message_on :<%= column[:name] %> %>
         <%%= f.<%= column[:field_type] %> :<%= column[:name] %>, :class => :<%= column[:field_type] %><%= column[:required] ? ', :class=>"required"' : '' %> %>
       <%- end -%>
+    <%- unless column[:name] == 'position' -%>
     </fieldset>
+    <%- end -%>
   <%- end -%>
   <div class="group navform wat-cf form_send">
     <%%= f.image_submit "/admin/newimg/button_save.png", :class => :submit, :alt => "Save" %>

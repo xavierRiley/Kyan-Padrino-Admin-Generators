@@ -68,14 +68,14 @@ class KyanAdminPage < Padrino::Generators::AdminPage
             inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  acts_as_list :order => \"#{model_field[:name]}\"\n", :before => 'end'
             inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  after_create :initialize_position\n", :before => 'end'
             inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  private\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  def initialize_position\n    self.position = #{@orm.name_singular}.maximum(:#{model_field[:name]}) + 1\n  end\n", :after => "  private\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  def initialize_position\n    self.position = #{@orm.name_singular.capitalize}.maximum(:#{model_field[:name]}) + 1\n  end\n", :after => "  private\n"
           end
         end
 
         #Leave the index page till and remove columns based on questions
         #Ask about which fields to display for everything except accounts
         if @orm.name_plural != 'accounts' and ask("Do you want to specify which columns to display for the #{@orm.name_plural} index page? (y|n)", :display_all, :red) == 'y'
-          @ignoreFields = []
+          @ignoreFields = ['id']
           @orm.columns.each do |model_field|
             if ask("Display #{model_field.name.to_s}? (y|n)", :no, :red) != 'y'
               @ignoreFields << model_field.name

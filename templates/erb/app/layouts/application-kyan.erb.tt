@@ -12,18 +12,21 @@
       <div id="header_wrap">
       	<div id="header_title">
           <a id="logo" href="/admin"></a>
-          <%%= link_to "Padrino Admin", url(:base_index), :id => 'cms_title' %>
+          <%%#= link_to "Padrino Admin", url(:base_index), :id => 'cms_title' %>
       	</div>
         <ul id="nav_sub" class="wat-cf">
-          <li><%%= link_to pat(:profile), url(:accounts, :edit, :id => current_account.id) %></li>
-          <li><%%= button_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
+          <li><%%= link_to pat(:accounts), url(:accounts, :index) %></li>          
+          <li><%%= link_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
         </ul>
       </div>
       <div id="nav">
         <div id="nav_wrap">
           <ul class="wat-cf">
             <%% project_modules.each do |project_module| %>
-            <li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
+              <%%- unless ['/snippets', '/style_overrides', '/seo_meta', '/accounts', '/publication_types', '/company_statuses', '/locations', '/categories'].include? project_module.path  -%>
+              <%%- if project_module.path == '/news_articles' then my_human_name = "News" else my_human_name = project_module.human_name end -%>
+                <li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
+              <%%- end -%>
             <%% end %>
           </ul>
         </div>
@@ -38,7 +41,7 @@
       </div>
       <div id="footer">
         <div class="block">
-          <p>Copyright &copy; <%%= Time.now.year %> Your Site - Powered by <a href="http://padrino.github.com" target="_blank">Padrino v.<%%= Padrino.version %>.</a></p>
+          <p>Copyright &copy; <%%= Time.now.year %> Kyanmedia</p>
         </div>
       </div>
     </div>
