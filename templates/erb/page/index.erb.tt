@@ -18,7 +18,7 @@
           <th class="last">&nbsp;</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="filtered">
         <%% @<%= @orm.name_plural %>.each_with_index do |<%= @orm.name_singular %>,index| %>
         <tr class="<%%= (index % 2 == 0 ? 'odd' : 'even') %>" >
           <%- @orm.columns.each_with_index do |column, i| -%>

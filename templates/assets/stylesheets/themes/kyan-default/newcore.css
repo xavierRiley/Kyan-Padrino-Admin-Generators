@@ -198,3 +198,8 @@ box-shadow:0px 0px 3px #959595;/* Opera 10.5,IE 9.0 */ }
 /* Custom styles for this site */
 input.submit_button { width:67px;height:27px;background:transparent url('/admin/newimg/button_submit.png') no-repeat 0 0; }
 .error-js {color:red;}
+
+.hidden {display: none;}
+#filter_container {float: right;}
+input#filter {width: 250px; border-radius: 5px;}
+
