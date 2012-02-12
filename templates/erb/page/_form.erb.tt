@@ -60,10 +60,10 @@
           });
         </script>
         <div class="date_selector">
-          <%%= f.select :"<%= column[:name] %>_year", :id=>"<%= column[:name] %>_year", :options => (Time.now.year..1900).to_a.reverse!, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.year : Time.now.year) %>
-          <%%= f.select :"<%= column[:name] %>_month", :id=>"<%= column[:name] %>_month", :options => (1..12), :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.month : Time.now.month) %>
-          <%%= f.select :"<%= column[:name] %>_day", :id=>"<%= column[:name] %>_day", :options => (1..31), :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.day : Time.now.day) %>
-          <%%= f.hidden_field :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'date'<%= column[:required] ? ", 'required'" : '' %>].join(" ") %>
+          <%%= select_tag :"<%= column[:name] %>_day", :id=>"<%= column[:name] %>_day", :options => (1..31).map{|n| "%02d" % n}, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? "%02d" % @<%= @orm.name_singular %>.<%= column[:name] %>.day : "%02d" % Time.now.day) %>
+          <%%= select_tag :"<%= column[:name] %>_month", :id=>"<%= column[:name] %>_month", :options => (1..12).map{|n| [Date::MONTHNAMES[n], "%02d" % n]}, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? "%02d" % @<%= @orm.name_singular %>.<%= column[:name] %>.month : "%02d" % Time.now.month) %>
+          <%%= select_tag :"<%= column[:name] %>_year", :id=>"<%= column[:name] %>_year", :options => (1900..Time.now.year).to_a.reverse!, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.year : Time.now.year) %>
+          <%%= f.hidden_field :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'date'<%= column[:required] ? ", 'required'" : '' %>].join(" "), :value => (@<%= @orm.name_singular%>.new_record? || @<%= @orm.name_singular %>.<%= column[:name] %>.blank? ? Date.today.strftime('%Y-%m-%d') : @<%= @orm.name_singular %>.<%= column[:name] %>.strftime('%Y-%m-%d')) %>
         </div>
       <%- elsif column[:field_type] == :boolean -%>
         <%%= f.label :<%= column[:name] %> %>
