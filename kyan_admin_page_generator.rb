@@ -37,6 +37,15 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         template "templates/#{ext}/page/edit.#{ext}.tt",  destination_root("/admin/views/#{@orm.name_plural}/edit.#{ext}")
         template "templates/#{ext}/page/new.#{ext}.tt",   destination_root("/admin/views/#{@orm.name_plural}/new.#{ext}")
 
+        #Add Basic hooks to model file
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    \#LEAVE THESE COMMENTS IN PLACE - they're used as hooks by Thor\n", :before => 'end'
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    \#Carrierwave\n", :before => 'end'
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    \#scopes\n", :before => 'end'
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    \#validates_uniqueness_of\n", :before => 'end'
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    \#before_save\n", :before => 'end'
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    \#after_create\n", :before => 'end'
+        inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "\n    private\n", :before => 'end'
+
         ## Carrierwave support
         # based on naming convention of '_file' add in carrierwave support
         @orm.column_fields.each do |model_field| 
@@ -44,7 +53,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
             empty_directory("public/images/uploads")
             empty_directory("public/uploads")
             prepend_file destination_root("models/#{@orm.name_singular}.rb"), "require 'carrierwave/orm/#{fetch_component_choice(:orm)}'\n"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"   mount_uploader :#{model_field[:name]}, Uploader\n", :before => 'end'
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"   mount_uploader :#{model_field[:name]}, Uploader\n", :after => "    \#Carrierwave\n"
           end
         end
 
@@ -52,9 +61,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         # based on naming convention of 'publish' add in published scope
         @orm.column_fields.each do |model_field|
           if model_field[:name].to_s == 'publish'
-            inject_into_class destination_root("models/#{@orm.name_singular}.rb"), @orm.name_singular.capitalize do 
-              "  scope :published, lambda { where(\"publish = ?\", true).order(\"position ASC\") }\n"
-            end
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "  scope :published, lambda { where(\"publish = ?\", true).order(\"position ASC\") }\n", :after => "    \#scopes\n"
           end
         end
 
@@ -64,10 +71,9 @@ class KyanAdminPage < Padrino::Generators::AdminPage
           if model_field[:name].to_s == 'position'
             require_dependencies('acts_as_list')
             gsub_file destination_root("/admin/controllers/#{@orm.name_plural}.rb"), "#{@orm.name_singular.capitalize}.all", "#{@orm.name_singular.capitalize}.find(:all, :order => 'position')"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  validates_uniqueness_of :#{model_field[:name]}\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  acts_as_list :order => \"#{model_field[:name]}\"\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  after_create :initialize_position\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  private\n", :before => 'end'
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  validates_uniqueness_of :#{model_field[:name]}\n", :after => "    \#validates_uniqueness_of\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  acts_as_list :order => \"#{model_field[:name]}\"\n", :after => "    \#Carrierwave\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  after_create :initialize_position\n", :after => "    \#afer_create\n"
             inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  def initialize_position\n    self.position = #{@orm.name_singular.capitalize}.maximum(:#{model_field[:name]}) + 1\n  end\n", :after => "  private\n"
           end
         end
@@ -75,14 +81,10 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         ## Basic Date Support
         # based on naming convention of 'position' add in acts as list support
         @orm.column_fields.each do |model_field|
-          if model_field[:name].to_s == 'position'
-            require_dependencies('acts_as_list')
+          if model_field[:name].to_s == '_date'
             gsub_file destination_root("/admin/controllers/#{@orm.name_plural}.rb"), "#{@orm.name_singular.capitalize}.all", "#{@orm.name_singular.capitalize}.find(:all, :order => 'position')"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  validates_uniqueness_of :#{model_field[:name]}\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  acts_as_list :order => \"#{model_field[:name]}\"\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  after_create :initialize_position\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  private\n", :before => 'end'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  def initialize_position\n    self.position = #{@orm.name_singular.capitalize}.maximum(:#{model_field[:name]}) + 1\n  end\n", :after => "  private\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  before_save :ensure_dates\n", :after => "    \#before_save\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  def ensure_dates\n    self.#{model_field[:name]} = DateTime.parse(self.publish_date.to_s) if self.publish_date\n  end\n", :after => "  private\n"
           end
         end
 
