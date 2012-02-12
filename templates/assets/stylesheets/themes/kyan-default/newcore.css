@@ -40,7 +40,7 @@ ul li { padding-left:23px;background:url('/admin/newimg/bg_ul_bullet.png') 0 50%
 background:white;overflow:hidden;position:relative;width:100%; }
 #header_wrap { width:962px;margin:0 auto;height:auto;position:relative;padding-left:20px; overflow: hidden; }
 #header_title { left:20px;padding-top:50px;padding-bottom:2px;height:40px; float: left; }
-#header #logo { position: absolute; top: 10px;left: 18px; display:block;width:238px;height:80px;text-indent:-9999em;background:url('/images/logo.png') top left no-repeat; }
+#header #logo { position: absolute; top: 10px;left: 18px; display:block;width:238px;height:80px;text-indent:-9999em;background:url('/admin/newimg/logo.png') top left no-repeat; background-size: auto 90%;}
 #header #cms_title { margin-left:290px;font-size:16px;color:#999;line-height:24px;text-decoration:none; }
 #header a { -webkit-font-smoothing:antialiased;color:#888;text-rendering:optimizeLegibility; }
 #header a:hover { text-decoration: underline; }

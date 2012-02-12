@@ -2,52 +2,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Padrino Admin</title>
-  <%%= stylesheet_link_tag :base, "themes/<%= options[:theme] %>/style" %>
+  <title>Kyan Admin</title>
+  <%%= stylesheet_link_tag "themes/kyan-default/newcore" %> 
+  <%%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js" %>
 </head>
-<body>
-  <div id="container">
-    <div id="box">
-      <h1>Padrino Admin</h1>
-      <div class="block" id="block-login">
-        <h2>Login Box</h2>
-        <div class="content login">
-          <div class="flash">
-            <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+<body id="admin_login">
+  <div id="login_container">
+    <div id="container">
+      <div id="header">
+      	<div id="header_wrap">
+      		<div id="header_title">
+      			<a id="logo" href="/admin"></a>
+            <%%= link_to "Kyan Admin", url(:base_index), :id => 'cms_title' %>
+      		</div>
+      	</div>
+      </div>
+      <div id="content">
+        <div class="block" id="content_main">
+          <div id="content_main">
+            <div id="login_box" class="block">
+              <div class="content login">
+                <div class="flash">
+                  <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+                </div>
+                <%% form_tag(url(:sessions, :create), :class => 'form login') do %>
+                  <fieldset>
+                  <div class="group wat-cf">
+                    <div class="left">
+                      <label class="label right">Login</label>
+                    </div>
+                    <div class="right">
+                      <%%= text_field_tag :email, :value => params[:email], :class => 'text' %>
+                    </div>
+                  </div>
+                  <div class="group wat-cf">
+                    <div class="left">
+                      <label class="label right">Password</label>
+                    </div>
+                    <div class="right">
+                      <%%= password_field_tag :password, :value => params[:password], :class => 'text' %>
+                    </div>
+                  </div>
+                  <%% if Padrino.env == :development %>
+                    <div class="group wat-cf">
+                      <div class="left">
+                        <label class="label right">Bypass login?</label>
+                      </div>
+                      <div class="right">
+                        <%%= check_box_tag :bypass %>
+                      </div>
+                    </div>
+                  <%% end %>
+                  <div class="group navform wat-cf">
+                    <div class="right">
+                      <%%= image_submit_tag('/admin/newimg/button_login_big.png', :class => 'button submit') %>
+                    </div>
+                  </div>
+                  </fieldset>
+                <%% end %>
+              </div>
+            </div>
           </div>
-          <%% form_tag(url(:sessions, :create), :class => 'form login') do %>
-            <div class="group wat-cf">
-              <div class="left">
-                <label class="label right">Login</label>
-              </div>
-              <div class="right">
-                <%%= text_field_tag :email, :value => params[:email], :class => 'text_field' %>
-              </div>
-            </div>
-            <div class="group wat-cf">
-              <div class="left">
-                <label class="label right">Password</label>
-              </div>
-              <div class="right">
-                <%%= password_field_tag :password, :value => params[:password], :class => 'text_field' %>
-              </div>
-            </div>
-            <%% if Padrino.env == :development %>
-              <div class="group wat-cf">
-                <div class="left">
-                  <label class="label right">Bypass login?</label>
-                </div>
-                <div class="right">
-                  <%%= check_box_tag :bypass %>
-                </div>
-              </div>
-            <%% end %>
-            <div class="group navform wat-cf">
-              <div class="right">
-                <%%= submit_tag "Sign in", :class => :button %>
-              </div>
-            </div>
-          <%% end %>
         </div>
       </div>
     </div>
