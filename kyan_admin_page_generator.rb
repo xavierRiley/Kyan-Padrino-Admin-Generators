@@ -99,6 +99,13 @@ class KyanAdminPage < Padrino::Generators::AdminPage
           end
           template "templates/#{ext}/page/index.#{ext}.tt", destination_root("/admin/views/#{@orm.name_plural}/index.#{ext}")
         else
+          #Add sensible defaults - ignore ID and text areas
+          @ignoreFields = ['id']
+          @orm.columns.each do |model_field|
+            if model_field.type.to_s.include?('text')
+              @ignoreFields << model_field.name
+            end
+          end
           template "templates/#{ext}/page/index.#{ext}.tt", destination_root("/admin/views/#{@orm.name_plural}/index.#{ext}")
         end
 

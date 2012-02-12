@@ -21,7 +21,7 @@
         <tbody class="filtered">
         <%% @<%= @orm.name_plural %>.each_with_index do |<%= @orm.name_singular %>,index| %>
         <tr class="<%%= (index % 2 == 0 ? 'odd' : 'even') %>" >
-          <%- @orm.columns.each_with_index do |column, i| -%>
+          <%- (@ignoreFields.nil? ? @orm.columns : @orm.columns.delete_if{|col| @ignoreFields.include? col.name }).each_with_index do |column, i| -%>
             <%- unless @ignoreFields.nil? == false and @ignoreFields.include? column.name -%>
               <%- if column.name.to_s.include?('_file') or column.name.to_s.include?('_img') -%>
                 <%%if <%=  @orm.name_singular.to_s + '.' + column.name %>.class == Uploader and not <%=  @orm.name_singular.to_s + '.' + column.name %>.url.nil? %>
@@ -47,6 +47,8 @@
               </td>
               <%- elsif column.name.to_s == 'position' -%>
               <td class="fixed <%%= " first" if index==0 %>"><%%= admin_position_widget(<%= @orm.name_singular %>) %></td>
+              <%- elsif column.type.to_s.include?('date') -%>
+              <td class="fixed <%%= " first" if index==0 %>"><%%= <%= @orm.name_singular %>.<%= column.name %> ? <%= @orm.name_singular %>.<%= column.name %>.strftime('%d/%m/%Y') : '' %></td>
               <%- else -%>
               <td<%%= " class=\"first\"" if index==0 %>><%%= <%= @orm.name_singular %>.<%= column.name %> %></td>
               <%- end -%>

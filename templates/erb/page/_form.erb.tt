@@ -53,7 +53,6 @@
         <%%= f.error_message_on :<%= column[:name] %> %>
         <script type="text/javascript">
           $('document').ready(function() {
-            $().dateSelectBoxes($('#<%= column[:name] %>_year'),$('#<%= column[:name] %>_month'),$('#<%= column[:name] %>_day'),true);
             $('.date_selector select').change(function() {
               $('input.<%= column[:name] %>').val($('#<%= column[:name] %>_year').val() + '-' + $('#<%= column[:name] %>_month').val() + '-' + $('#<%= column[:name] %>_day').val());
             });
