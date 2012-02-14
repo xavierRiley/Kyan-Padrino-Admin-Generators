@@ -3,8 +3,8 @@ $('document').ready(function() {
    errorClass: "error-js"
   })
   //hack to tidy up admin
-  if($('td.fixed.last').html()) {
-	$('td.fixed.last').each(function(index) {
+  if($('td.last').html()) {
+	$('td.last').each(function(index) {
 		curHtml = $(this).html();
 		$(this).html(curHtml.replace('|', ''));
 		});

@@ -135,7 +135,7 @@ form #primary input[type="text"],
 form #primary input.text,
 form #primary textarea,
 form #primary .text_field,
-form #primary .password_field { -moz-box-shadow:inset 0px 1px 2px #d3d3d3;/* FF3.5+ */
+form #primary .password_field, input#filter { -moz-box-shadow:inset 0px 1px 2px #d3d3d3;/* FF3.5+ */
 -webkit-box-shadow:inset 0px 1px 2px #d3d3d3;/* Saf3.0+,Chrome */
 box-shadow:inset 0px 1px 2px #d3d3d3;/* Opera 10.5,IE 9.0 */
 background:#fafafa;font-family:"Helvetica Neue","Helvetica",Arial,sans-serif;color:#383838;border:1px solid #b5b5b5;width:636px;padding:7px;font-size:14px;margin-bottom:17px; }
