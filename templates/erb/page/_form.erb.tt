@@ -1,7 +1,7 @@
 <div id="primary">
   <%- @orm.column_fields.each do |column| -%>
-    <%- unless column[:name] == 'position' -%>
-    <fieldset id="<%= column[:name] %>" class="kyanadmin">
+    <%- unless column[:name] == 'position' || column[:name].index('_id') -%>
+    <fieldset id="<%= column[:name] %>_fieldset" class="kyanadmin">
     <%- end -%>
       <%- if column[:name].to_s.index('_file') or column[:name].to_s.index('_img') -%>
         <%%= f.label :<%= column[:name] %> %>
@@ -74,14 +74,35 @@
         </div>
       <%- elsif column[:name].to_s == 'position' -%>
           <%%= f.hidden_field :<%= column[:name] %>, :value => @<%= @orm.name_singular %>.position,:class => ['<%= column[:name] %>', 'position'].join(" ") %>
+      <%- elsif column[:name].to_s.index('_id') -%>
+          <%#- Relationship form elements defined below so hide _id columns %>
       <%- else -%>
         <%%= f.label :<%= column[:name] %> %>
         <%%= f.error_message_on :<%= column[:name] %> %>
         <%%= f.<%= column[:field_type] %> :<%= column[:name] %>, :class => :<%= column[:field_type] %><%= column[:required] ? ', :class=>"required"' : '' %> %>
       <%- end -%>
-    <%- unless column[:name] == 'position' -%>
+    <%- unless column[:name] == 'position' || column[:name].index('_id') -%>
     </fieldset>
     <%- end -%>
+  <%- end -%>
+  <%#- Relationship form elements defined here %>
+  <%- @orm.klass.reflections.each do |relationship| -%>
+    <fieldset id="<%= relationship[0] %>_id_fieldset" class="kyanadmin">
+      <%- if relationship[1].macro == :has_one || relationship[1].macro == :belongs_to -%>
+        <%%= f.label :<%= relationship[0] %>_id %>
+        <%%= f.error_message_on :<%= relationship[0] %>_id %>
+        <%%= f.select :<%= relationship[0] %>_id, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= @orm.column_fields.first.keys.first.to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %>_id %>
+      <%- elsif relationship[1].macro == :has_many -%>
+        <%%= f.label :<%= relationship[0] %>_id %>
+        <%%= f.error_message_on :<%= relationship[0] %>_id %>
+        <%%- <%= relationship[0].to_s.singularize.camelize %>.all.each do |choice| -%>
+          <div>
+            <%%= check_box_tag "<%= @orm.name_singular.to_s %>[<%= relationship[0].to_s.singularize %>_ids][]", :value => choice.id, :checked => @<%= @orm.name_singular %>.<%= relationship[0].to_s.pluralize %>.include?(choice) %>
+            <%%= choice.<%= @orm.column_fields.first.keys.first %> %>
+          </div>
+        <%%- end -%>
+      <%- end -%>
+    </fieldset>
   <%- end -%>
   <div class="group navform wat-cf form_send">
     <%%= f.image_submit "/admin/newimg/button_save.png", :class => :submit, :alt => "Save" %>
