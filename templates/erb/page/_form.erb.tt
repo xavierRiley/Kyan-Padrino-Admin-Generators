@@ -91,7 +91,7 @@
       <%- if relationship[1].macro == :has_one || relationship[1].macro == :belongs_to -%>
         <%%= f.label :<%= relationship[0] %>_id %>
         <%%= f.error_message_on :<%= relationship[0] %>_id %>
-        <%%= f.select :<%= relationship[0] %>_id, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= @orm.column_fields.first.keys.first.to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %>_id %>
+        <%%= f.select :<%= relationship[0] %>_id, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= @orm.column_fields.first.keys.first.to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %><%= relationship[1].macro == :belongs_to ? '_' : '.' %>id %>
       <%- elsif relationship[1].macro == :has_many -%>
         <%%= f.label :<%= relationship[0] %>_id %>
         <%%= f.error_message_on :<%= relationship[0] %>_id %>
