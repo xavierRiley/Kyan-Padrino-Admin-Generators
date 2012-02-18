@@ -48,6 +48,8 @@
                   <%%= link_to image_tag('/admin/newimg/notick.png', :alt => "Click to toggle on/off"), [:toggle, :<%= @orm.name_plural %>, :<%= column.name %>, <%= @orm.name_singular %>.id].join("/"), :class => "tick_link", :id => "tick" %>
                 <%% end %>
               </td>
+              <%- elsif column.name.to_s.index('_id') -%>
+              <td class="fixed <%%= " first" if index==0 %>"><%%= <%= @orm.name_singular %>.<%= column.name.gsub('_id', '') %> ? <%= @orm.name_singular %>.<%= column.name.gsub('_id', '') %>.<%= column.name.gsub('_id', '').camelize.constantize.column_names[1].to_s %> : '-'  %></td>
               <%- elsif column.name.to_s == 'position' -%>
               <td class="fixed <%%= " first" if index==0 %>"><%%= admin_position_widget(<%= @orm.name_singular %>) %></td>
               <%- elsif column.type.to_s.include?('date') -%>
