@@ -1,6 +1,6 @@
 <div id="primary">
   <%- @orm.column_fields.each do |column| -%>
-    <%- unless column[:name] == 'position' || column[:name].index('_id') -%>
+    <%- unless column[:name] == 'position' || column[:name].to_s.index('_id') -%>
     <fieldset id="<%= column[:name] %>_fieldset" class="kyanadmin">
     <%- end -%>
       <%- if column[:name].to_s.index('_img') -%>
@@ -22,7 +22,7 @@
         <%%= f.error_message_on :<%= column[:name] %> %>
         <%%= f.<%= column[:field_type] %> :<%= column[:name] %>, :class => :<%= column[:field_type] %><%= column[:required] ? ', :class=>"required"' : '' %> %>
       <%- end -%>
-    <%- unless column[:name] == 'position' || column[:name].index('_id') -%>
+    <%- unless column[:name] == 'position' || column[:name].to_s.index('_id') -%>
     </fieldset>
     <%- end -%>
   <%- end -%>
