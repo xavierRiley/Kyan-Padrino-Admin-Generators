@@ -3,75 +3,16 @@
     <%- unless column[:name] == 'position' || column[:name].index('_id') -%>
     <fieldset id="<%= column[:name] %>_fieldset" class="kyanadmin">
     <%- end -%>
-      <%- if column[:name].to_s.index('_file') or column[:name].to_s.index('_img') -%>
-        <%%= f.label :<%= column[:name] %> %>
-        <%%= f.error_message_on :<%= column[:name] %> %>
-        <%%- if @<%=  @orm.name_singular.to_s + '.' + column[:name] %>.class == Uploader and not @<%=  @orm.name_singular.to_s + '.' + column[:name] %>.url.nil? -%>
-          <%%- if @<%= @orm.name_singular %>.<%= column[:name] %>.versions.include? :admin_thumb -%>
-            <img class="preview admin_thumb" width="80" src="<%%= @<%= @orm.name_singular %>.<%= column[:name] %>.admin_thumb.url %>" />
-            <br />
-            <br />
-            <span>Upload Replacement</span>
-            <br />
-            <br />
-            <%%= f.file_field :<%= column[:name]%>, :class => :upload  %>
-            <br />
-            <br />
-            <%%= f.check_box :remove_<%= column[:name] %> %>
-            <span>Remove image?</span>
-            <br>
-          <%%- else -%>
-            <img class="preview admin_thumb" width="80" src="<%%= @<%= @orm.name_singular %>.<%= column[:name] %>.url %>" />
-            <br />
-            <br />
-            <span>Upload Replacement</span>
-            <br />
-            <br />
-            <%%= f.file_field :<%= column[:name]%>, :class => :upload  %>
-            <br />
-            <br />
-            <%%= f.check_box :remove_<%= column[:name] %> %>
-            <span>Remove image?</span>
-            <br>
-          <%%- end -%>
-        <%%- else -%>
-          <%%= f.file_field :<%= column[:name] %>, :class => :upload <%= column[:required] ? ', :class=>"required"' : '' %> %>
-        <%%- end -%>
+      <%- if column[:name].to_s.index('_img') -%>
+        <%%= f.image_upload_block :<%= column[:name] %>, :caption => '<%= column[:name].gsub('_img', '').capitalize %>:' %>
+      <%- elsif column[:name].to_s.index('_file') -%>
+        <%%= f.file_upload_block :<%= column[:name] %>, :caption => '<%= column[:name].gsub('_file', '').capitalize %>' %>
       <%- elsif column[:name].to_s.index('_mce') -%>
-        <%%= f.label :<%= column[:name] %> %>
-        <%%= f.error_message_on :<%= column[:name] %> %>
-        <script type="text/javascript">
-          window.onload = function() {
-          var oFCKeditor = new FCKeditor('<%= @orm.name_singular %>_<%= column[:name] %>');
-          oFCKeditor.BasePath = "/admin/javascripts/fckeditor/";
-          oFCKeditor.ReplaceTextarea();
-          }
-        </script>
-        <%%= f.text_area :<%= column[:name] %>, :class => ['text_area', 'mce'<%= column[:required] ? ", 'required'" : '' %>] %>
+        <%%= f.text_mce_block :<%= column[:name] %>, :class => [<%= column[:required] ? ", 'required'" : '' %>], :caption => '<%= column[:name].gsub('_mce', '').capitalize %>:' %>
       <%- elsif column[:name].to_s.index('_date') or column[:field_type] == :datetime -%>
-        <%%= f.label :<%= column[:name] %> %>
-        <%%= f.error_message_on :<%= column[:name] %> %>
-        <script type="text/javascript">
-          $('document').ready(function() {
-            $('.date_selector select').change(function() {
-              $('input.<%= column[:name] %>').val($('#<%= column[:name] %>_year').val() + '-' + $('#<%= column[:name] %>_month').val() + '-' + $('#<%= column[:name] %>_day').val());
-            });
-          });
-        </script>
-        <div class="date_selector">
-          <%%= select_tag :"<%= column[:name] %>_day", :id=>"<%= column[:name] %>_day", :options => (1..31).map{|n| "%02d" % n}, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? "%02d" % @<%= @orm.name_singular %>.<%= column[:name] %>.day : "%02d" % Time.now.day) %>
-          <%%= select_tag :"<%= column[:name] %>_month", :id=>"<%= column[:name] %>_month", :options => (1..12).map{|n| [Date::MONTHNAMES[n], "%02d" % n]}, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? "%02d" % @<%= @orm.name_singular %>.<%= column[:name] %>.month : "%02d" % Time.now.month) %>
-          <%%= select_tag :"<%= column[:name] %>_year", :id=>"<%= column[:name] %>_year", :options => (1900..Time.now.year).to_a.reverse!, :selected => (@<%= @orm.name_singular %>.<%= column[:name] %> ? @<%= @orm.name_singular %>.<%= column[:name] %>.year : Time.now.year) %>
-          <%%= f.hidden_field :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'date'<%= column[:required] ? ", 'required'" : '' %>].join(" "), :value => (@<%= @orm.name_singular%>.new_record? || @<%= @orm.name_singular %>.<%= column[:name] %>.blank? ? Date.today.strftime('%Y-%m-%d') : @<%= @orm.name_singular %>.<%= column[:name] %>.strftime('%Y-%m-%d')) %>
-        </div>
+        <%%= f.date_block(:<%= column[:name]%>, :years_to_now => 100, :years_from_now => 0, :selected => @<%= @orm.name_singular %>.<%= column[:name]%> ) %>
       <%- elsif column[:field_type] == :boolean -%>
-        <%%= f.label :<%= column[:name] %> %>
-        <%%= f.error_message_on :<%= column[:name] %> %>
-        <div id="<%= column[:name] %>" class="group">
-          <%%= f.label :<%= column[:name]%> %>
-          <%%= f.error_message_on :<%= column[:name]%> %>
-          <%%= f.check_box :<%= column[:name] %>, :class => ['<%= column[:name] %>', 'check_box'<%= column[:required] ? ", 'required'" : '' %>].join(" ") %>
-        </div>
+        <%%= f.boolean_block :<%= column[:name] %> %>
       <%- elsif column[:name].to_s == 'position' -%>
           <%%= f.hidden_field :<%= column[:name] %>, :value => @<%= @orm.name_singular %>.position,:class => ['<%= column[:name] %>', 'position'].join(" ") %>
       <%- elsif column[:name].to_s.index('_id') -%>
@@ -85,13 +26,12 @@
     </fieldset>
     <%- end -%>
   <%- end -%>
+
   <%#- Relationship form elements defined here %>
   <%- @orm.klass.reflections.each do |relationship| -%>
     <fieldset id="<%= relationship[0] %>_id_fieldset" class="kyanadmin">
       <%- if relationship[1].macro == :has_one || relationship[1].macro == :belongs_to -%>
-        <%%= f.label :<%= relationship[0] %>_id %>
-        <%%= f.error_message_on :<%= relationship[0] %>_id %>
-        <%%= f.select :<%= relationship[0] %>_id, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= @orm.column_fields.first.keys.first.to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %><%= relationship[1].macro == :belongs_to ? '_' : '.' %>id %>
+        <%%= f.select_block :<%= relationship[0] %><%= relationship[1].macro == :belongs_to ? '_id' : '' %>, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= @orm.column_fields.first.keys.first.to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %> ? @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %><%= relationship[1].macro == :belongs_to ? '_' : '.' %>id : '' %>
       <%- elsif relationship[1].macro == :has_many -%>
         <%%= f.label :<%= relationship[0] %>_id %>
         <%%= f.error_message_on :<%= relationship[0] %>_id %>

@@ -1,5 +1,14 @@
 Admin.helpers do
   
+  def update_params_to_use_model(model_name, field)
+    puts params.inspect
+    if params[model_name][field].empty?
+      params[model_name][field] = nil
+    else
+      params[model_name][field] = (field.to_s.camelize.constantize).find(params[model_name][field])
+    end
+  end
+
   def tick_widget(input = nil)
     if input.blank?
       '<img src="/admin/newimg/notick.png" />'

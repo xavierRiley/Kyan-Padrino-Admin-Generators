@@ -59,20 +59,21 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         
         ## Relationship support
         # based on active record reflection
-        # @orm.klass.reflections.each do |relationship|
-        #   case relationship[1].macro
-        #   when :has_one
-            
-        #     say 'HASONEHASHONEHASONE!!!!!'
-        #   when :has_many
-        #     say 'has many'
-        #   when :belongs_to
-        #     say 'belongs_to'
-        #   else
-        #     say 'no relationships defined'
-        #     # inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "  scope :published, lambda { where(\"publish = ?\", true).order(\"position ASC\") }\n", :after => "    \#scopes\n"
-        #   end
-        # end
+        @orm.klass.reflections.each do |relationship|
+          case relationship[1].macro
+          when :has_one
+            inject_into_file destination_root("admin/controllers/#{@orm.name_plural}.rb"), "    update_params_to_use_model(:#{@orm.name_singular}, :#{relationship[0].to_s}) \#update - these lines need to be unique for Thor to generate them properly\n", :after => "put :update, :with => :id do\n"
+            inject_into_file destination_root("admin/controllers/#{@orm.name_plural}.rb"), "    update_params_to_use_model(:#{@orm.name_singular}, :#{relationship[0].to_s}) \#create - these lines need to be unique for Thor to generate them properly\n", :after => "post :create do\n"
+            # say 'HASONEHASHONEHASONE!!!!!'
+          when :has_many
+            # say 'has many'
+          when :belongs_to
+            # say 'belongs_to'
+          else
+            # say 'no relationships defined'
+            # inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "  scope :published, lambda { where(\"publish = ?\", true).order(\"position ASC\") }\n", :after => "    \#scopes\n"
+          end
+        end
 
         ## Publish support
         # based on naming convention of 'publish' add in published scope
