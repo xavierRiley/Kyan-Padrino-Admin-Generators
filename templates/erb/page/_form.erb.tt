@@ -28,6 +28,7 @@
   <%- end -%>
 
   <%#- Relationship form elements defined here %>
+  <%- if @orm.klass.reflections -%>
   <%- @orm.klass.reflections.each do |relationship| -%>
     <fieldset id="<%= relationship[0] %>_id_fieldset" class="kyanadmin">
       <%- if relationship[1].macro == :has_one || relationship[1].macro == :belongs_to -%>
@@ -43,6 +44,7 @@
         <%%- end -%>
       <%- end -%>
     </fieldset>
+  <%- end -%>
   <%- end -%>
   <div class="group navform wat-cf form_send">
     <%%= f.image_submit "/admin/newimg/button_save.png", :class => :submit, :alt => "Save" %>
