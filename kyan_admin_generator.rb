@@ -66,14 +66,14 @@ class KyanAdminApp < Padrino::Generators::AdminApp
       admin_app.default_orm = Padrino::Admin::Generators::Orm.new(:account, orm, columns, column_fields)
       admin_app.invoke_all
       
-      admin_config_params = [
-        "AdminConfiguration", "model_name:string", "fieldset:string", "contains:text", "hide:boolean", "label:string", "validation:string",
-        "-a=#{options[:app]}",
-        "-r=#{options[:root]}"
-      ]
+      # admin_config_params = [
+      #   "AdminConfiguration", "model_name:string", "fieldset:string", "contains:text", "hide:boolean", "label:string", "validation:string",
+      #   "-a=#{options[:app]}",
+      #   "-r=#{options[:root]}"
+      # ]
       
-      Padrino::Generators::Model.start(admin_config_params)
-      inject_into_class destination_root('models/admin_configuration.rb'), "AdminConfiguration","    serialize :contains\n    serialize :validation\n"
+      # Padrino::Generators::Model.start(admin_config_params)
+      # inject_into_class destination_root('models/admin_configuration.rb'), "AdminConfiguration","    serialize :contains\n    serialize :validation\n"
 
       template "templates/account/#{orm}.rb.tt", destination_root(options[:app], "models", "account.rb"), :force => true
 
@@ -84,8 +84,8 @@ class KyanAdminApp < Padrino::Generators::AdminApp
       end
       
       #Populate admin config with model info
-      template "templates/account/admin_config_controller.rb.tt", destination_root("admin/controllers/admin_configuration.rb")
-      template "templates/account/admin_config.rb.tt", destination_root("db/admin_config.rb")
+      # template "templates/account/admin_config_controller.rb.tt", destination_root("admin/controllers/admin_configuration.rb")
+      # template "templates/account/admin_config.rb.tt", destination_root("db/admin_config.rb")
 
       empty_directory destination_root("admin/controllers")
       empty_directory destination_root("admin/views")
