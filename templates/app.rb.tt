@@ -20,6 +20,9 @@ class Admin < Padrino::Application
   # layout  :my_layout          # Layout can be in views/layouts/foo.ext or views/foo.ext (default :application)
   #
 
+  #Use the custom Kyan Form Builder
+  set :default_builder, 'KyanFormBuilder'
+
   set :login_page, "/admin/sessions/new"
 
   enable  :sessions
