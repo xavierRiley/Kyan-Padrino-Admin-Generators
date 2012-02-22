@@ -1,4 +1,4 @@
-<%= @app_name %>.helpers do
+module Padrino::Helpers do
   
   #Here be helpers for generating thumbs with magickly
 
