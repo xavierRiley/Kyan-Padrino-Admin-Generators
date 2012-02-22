@@ -51,7 +51,7 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
       field_html = label(field, label_options)
       field_html << error_message_on(field)
 
-      if @object.class == Uploader and not @object.send(field.to_sym).url.nil?
+      if @object.send(field.to_sym).class.to_s == 'Uploader' and not @object.send(field.to_sym).url.nil?
         if @object.send(field.to_sym).versions.include? :admin_thumb
           field_html << @template.content_tag(:img, '', :width => '80', :src => @object.send(field.to_sym).admin_thumb.url, :class => 'preview admin_thumb')
           field_html << '<br /><br />'
@@ -83,7 +83,7 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
       field_html = label(field, label_options)
       field_html << error_message_on(field)
 
-      if @object.class == Uploader and not @object.send(field.to_sym).url.nil?
+      if @object.send(field.to_sym).class.to_s == 'Uploader' and not @object.send(field.to_sym).url.nil?
         field_html << @template.content_tag(:img, '', :width => '80', :src => '/admin/newimg/report.png', :class => 'preview')
         field_html << @template.content_tag(:span, @object.send(field.to_sym).path )
         field_html << '<br /><br />'
