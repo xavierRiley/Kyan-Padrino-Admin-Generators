@@ -1,4 +1,4 @@
-module Padrino::Helpers do
+module Padrino::Helpers
   
   #Here be helpers for generating thumbs with magickly
 
