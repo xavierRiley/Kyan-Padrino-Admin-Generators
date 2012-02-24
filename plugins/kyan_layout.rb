@@ -44,7 +44,7 @@ KYAN_LAYOUT
 INDEX_VIEW = <<-INDEX_VIEW
 <div>
 	<h1>Hello Kyan!</h1>
-  <img src="<%= magickly_image('http://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Niobe050905-Siamese_Cat.jpeg/220px-Niobe050905-Siamese_Cat.jpeg').src %>" />
+  <img src="<%= magickly_image('http://localhost:3001/images/logo.png').src %>" />
 </div>
 INDEX_VIEW
 
