@@ -7,10 +7,9 @@
     <input type="text" id="filter" />
   </div>
 </div>
-<div id="content_wrap" class="block">
   <div class="content">
     <div class="inner">
-      <table class="table">
+      <table class="table table-bordered">
         <thead>
         <tr>
           <%- @orm.columns.each_with_index do |column, i| -%>
@@ -72,5 +71,4 @@
       </div>
     </div>
   </div>
-</div>
 <%% content_for :sidebar, partial("base/sidebar") %>

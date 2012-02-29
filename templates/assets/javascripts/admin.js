@@ -1,7 +1,5 @@
 $('document').ready(function() {
-  $.validator.setDefaults({
-   errorClass: "error-js"
-  })
+$(".collapse").collapse()
   //hack to tidy up admin
   if($('td.last').html()) {
 	$('td.last').each(function(index) {

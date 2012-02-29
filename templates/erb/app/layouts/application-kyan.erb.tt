@@ -3,48 +3,65 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Kyan Admin</title>
-  <%%= stylesheet_link_tag "themes/kyan-default/newcore" %>
-  <%%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js", "admin.js" %>
+  <%= stylesheet_link_tag "themes/kyan-default/core" %>
+  <%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/jquery.valclassate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js", "admin.js", "bootstrap-collapse.js" %>
 </head>
 <body>
-  <div id="container">
-    <div id="header">
-      <div id="header_wrap">
-      	<div id="header_title">
-          <a id="logo" href="/admin"></a>
-          <%%#= link_to "Padrino Admin", url(:base_index), :id => 'cms_title' %>
-      	</div>
-        <ul id="nav_sub" class="wat-cf">
-          <li><%%= link_to pat(:accounts), url(:accounts, :index) %></li>          
-          <li><%%= link_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
-        </ul>
-      </div>
-      <div id="nav">
-        <div id="nav_wrap">
-          <ul class="wat-cf">
-            <%% project_modules.each do |project_module| %>
-              <%%- unless ['/snippets', '/style_overrides', '/seo_meta', '/accounts', '/publication_types', '/company_statuses', '/locations', '/categories'].include? project_module.path  -%>
-              <%%- if project_module.path == '/news_articles' then my_human_name = "News" else my_human_name = project_module.human_name end -%>
-                <li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
-              <%%- end -%>
-            <%% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div id="content" class="wat-cf">
-      <div id="content_main">
-        <div class="flash">
-          <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
-        </div>
-        <%%= yield %>
-      </div>
-      <div id="footer">
-        <div class="block">
-          <p>Copyright &copy; <%%= Time.now.year %> Kyanmedia</p>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="header">
+		<div class="header_wrap">
+			<div class="header_title">
+				<a class="logo" href="/admin"></a>
+				<%#= link_to "Padrino Admin", url(:base_index), :class => 'cms_title' %>
+			</div>
+		</div>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="/admin">Kyan CMS</a>
+					<div class="nav-collapse">
+						<ul class="nav admin_nav pull-right">
+							<li><%= link_to pat(:accounts), url(:accounts, :index) %></li>		  
+							<li><%= link_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="subnav subnav-fixed">
+			<div class="container">
+				<ul class="nav nav-pills">
+					<% project_modules.each do |project_module| %>
+					  <%- unless ['/snippets', '/style_overrclasses', '/seo_meta', '/accounts', '/publication_types', '/company_statuses', '/locations', '/categories'].include? project_module.path  -%>
+					  <%- if project_module.path == '/news_articles' then my_human_name = "News" else my_human_name = project_module.human_name end -%>
+						<li class="<%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
+					  <%- end -%>
+					<% end %>
+				  </ul>
+			</div>	
+		</div>
+	</div>
+	
+	<div class="container">
+		
+	<div class="content">
+		<div class="content_main">
+			<div class="flash">
+				<%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+			</div>
+			<%= yield %>
+		</div>
+		<div class="footer">
+			<div class="block">
+				<p>Copyright &copy; <%= Time.now.year %> Kyanmedia</p>
+			</div>
+		</div>
+	</div>
+	
+	</div>
 </body>
 </html>
