@@ -3,8 +3,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Kyan Admin</title>
-  <%= stylesheet_link_tag "themes/kyan-default/core" %>
-  <%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/jquery.valclassate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js", "admin.js", "bootstrap-collapse.js" %>
+  <%%= stylesheet_link_tag "themes/kyan-default/core" %>
+  <%%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/jquery.valclassate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js", "admin.js", "bootstrap-collapse.js" %>
 </head>
 <body id="login_page">
 	<div class="header">
@@ -25,8 +25,8 @@
 					<a class="brand" href="/admin">Kyan CMS</a>
 					<div class="nav-collapse">
 						<ul class="nav admin_nav pull-right">
-							<li><%= link_to pat(:accounts), url(:accounts, :index) %></li>		  
-							<li><%= link_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
+							<li><%%= link_to pat(:accounts), url(:accounts, :index) %></li>		  
+							<li><%%= link_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
 						</ul>
 					</div>
 				</div>
@@ -35,12 +35,12 @@
 		<div class="subnav subnav-fixed">
 			<div class="container">
 				<ul class="nav nav-pills">
-					<% project_modules.each do |project_module| %>
-					  <%- unless ['/snippets', '/style_overrclasses', '/seo_meta', '/accounts', '/publication_types', '/company_statuses', '/locations', '/categories'].include? project_module.path  -%>
-					  <%- if project_module.path == '/news_articles' then my_human_name = "News" else my_human_name = project_module.human_name end -%>
-						<li class="<%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
-					  <%- end -%>
-					<% end %>
+					<%% project_modules.each do |project_module| %>
+					  <%%- unless ['/snippets', '/style_overrclasses', '/seo_meta', '/accounts', '/publication_types', '/company_statuses', '/locations', '/categories'].include? project_module.path  -%>
+					  <%%- if project_module.path == '/news_articles' then my_human_name = "News" else my_human_name = project_module.human_name end -%>
+						<li class="<%%= "active" if request.path_info =~ /^#{project_module.path}/ %>"><%%= link_to project_module.human_name + " <span>&nbsp;</span>", project_module.path("/admin") %></li>
+					  <%%- end -%>
+					<%% end %>
 				  </ul>
 			</div>	
 		</div>
@@ -51,21 +51,21 @@
 	<div class="content">
 		<div class="content_main">
 			<div class="flash">
-				<%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+				<%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
 			</div>
 			<div id="login_box" class="block">
 			  <div class="content login">
 				<div class="flash">
-				  <%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+				  <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
 				</div>
-				<% form_tag(url(:sessions, :create), :class => 'form login') do %>
+				<%% form_tag(url(:sessions, :create), :class => 'form login') do %>
 				  <fieldset>
 				  <div class="group wat-cf">
 					<div class="left">
 					  <label class="right">Login</label>
 					</div>
 					<div class="right">
-					  <%= text_field_tag :email, :value => params[:email], :class => 'text' %>
+					  <%%= text_field_tag :email, :value => params[:email], :class => 'text' %>
 					</div>
 				  </div>
 				  <div class="group wat-cf">
@@ -73,26 +73,26 @@
 					  <label class="right">Password</label>
 					</div>
 					<div class="right">
-					  <%= password_field_tag :password, :value => params[:password], :class => 'text' %>
+					  <%%= password_field_tag :password, :value => params[:password], :class => 'text' %>
 					</div>
 				  </div>
-				  <% if Padrino.env == :development %>
+				  <%% if Padrino.env == :development %>
 					<div class="group wat-cf">
 					  <div class="left">
 						<label class="right">Bypass login?</label>
 					  </div>
 					  <div class="right">
-						<%= check_box_tag :bypass %>
+						<%%= check_box_tag :bypass %>
 					  </div>
 					</div>
-				  <% end %>
+				  <%% end %>
 				  <div class="group navform wat-cf">
 					<div class="right">
-					  <%= image_submit_tag('/admin/newimg/button_login_big.png', :class => 'button submit') %>
+					  <%%= image_submit_tag('/admin/newimg/button_login_big.png', :class => 'button submit') %>
 					</div>
 				  </div>
 				  </fieldset>
-				<% end %>
+				<%% end %>
 			  </div>
 			</div>
 			
