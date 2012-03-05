@@ -1,6 +1,6 @@
 <div id="primary">
   <%- @orm.column_fields.each do |column| -%>
-    <%- unless column[:name] == 'position' || column[:name].to_s.index('_id') -%>
+    <%- unless column[:name] == 'position' || column[:name].to_s.index('_id') || column[:name].to_s == 'permalink' -%>
     <fieldset id="<%= column[:name] %>_fieldset" class="kyanadmin">
     <%- end -%>
       <%- if column[:name].to_s.index('_img') -%>
@@ -15,6 +15,8 @@
         <%%= f.boolean_block :<%= column[:name] %> %>
       <%- elsif column[:name].to_s == 'position' -%>
           <%%= f.hidden_field :<%= column[:name] %>, :value => @<%= @orm.name_singular %>.position,:class => ['<%= column[:name] %>', 'position'].join(" ") %>
+	  <%- elsif column[:name].to_s == 'permalink' -%>
+	      <%%= f.hidden_field :<%= column[:name] %>, :value => @<%= @orm.name_singular %>.permalink %>
       <%- elsif column[:name].to_s.index('_id') -%>
           <%#- Relationship form elements defined below so hide _id columns %>
       <%- else -%>
@@ -22,7 +24,7 @@
         <%%= f.error_message_on :<%= column[:name] %> %>
         <%%= f.<%= column[:field_type] %> :<%= column[:name] %>, :class => :<%= column[:field_type] %><%= column[:required] ? ', :class=>"required"' : '' %> %>
       <%- end -%>
-    <%- unless column[:name] == 'position' || column[:name].to_s.index('_id') -%>
+    <%- unless column[:name] == 'position' || column[:name].to_s.index('_id') || column[:name].to_s == 'permalink'  -%>
     </fieldset>
     <%- end -%>
   <%- end -%>
@@ -33,7 +35,7 @@
     <% puts relationship.inspect %>
     <fieldset id="<%= relationship[0] %>_id_fieldset" class="kyanadmin">
       <%- if relationship[1].macro == :has_one || relationship[1].macro == :belongs_to -%>
-        <%%= f.select_block :<%= relationship[0] %><%= relationship[1].macro == :belongs_to ? '_id' : '' %>, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= relationship[1].macro == :belongs_to ? @orm.column_fields.first.keys.first.to_s : relationship[0].to_s.camelize.constantize.column_names[1].to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %> ? @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %><%= relationship[1].macro == :belongs_to ? '_' : '.' %>id : '' %>
+        <%%= f.select_block :<%= relationship[0] %><%= relationship[1].macro == :belongs_to ? '_id' : '' %>, :options => <%= relationship[0].to_s.camelize %>.all.map{|opt| [opt.<%= relationship[1].macro == :belongs_to ? relationship[0].to_s.camelize.constantize.column_names[1].to_s : relationship[0].to_s.camelize.constantize.column_names[1].to_s %>, opt.id]}, :include_blank => true, :class => ['<%= relationship[0] %>_select text_field', 'select'].join(" "), :selected => @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %> ? @<%= @orm.name_singular %>.<%= relationship[0].to_s.singularize %><%= relationship[1].macro == :belongs_to ? '_' : '.' %>id : '' %>
       <%- elsif relationship[1].macro == :has_many -%>
         <%%= f.label :<%= relationship[0] %>_id %>
         <%%= f.error_message_on :<%= relationship[0] %>_id %>
