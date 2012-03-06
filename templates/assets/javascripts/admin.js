@@ -20,4 +20,6 @@ $(".collapse").collapse()
     });
     $("#filter-count").text(count);
   });
+$("#myModal").modal('hide');
+$().alert();
 });
