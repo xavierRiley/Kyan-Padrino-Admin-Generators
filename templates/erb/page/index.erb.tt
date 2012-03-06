@@ -1,7 +1,7 @@
 <div id="content_header" class="block">
   <h1><%%= pat(:all) %> <%%= mt(:<%= @orm.name_plural %>) %></h1>
   <ul class="actions">
-    <li><%%= link_to pat(:new), url(:<%= @orm.name_plural %>, :new), :class => "create_button" %></li>
+    <li><%%= link_to pat(:create_new), url(:<%= @orm.name_plural %>, :new), :class => "btn btn-primary" %></li>
   </ul>
   <div id="filter_container">
     <input type="text" id="filter" />
@@ -59,8 +59,8 @@
             <%- end -%>
           <%- end -%>
           <td class="last">
-            <%%= button_to pat(:edit), url(:<%= @orm.name_plural %>, :edit, :id => <%= @orm.name_singular %>.id), :method => :get, :class => :button_to %> |
-            <%%= button_to pat(:delete), "#myModal", :method => :delete, :class => :button_to,  :'data-toggle' => "modal", :'data-name' => "<%%= @orm.name_singular %>" %>
+            <%%= button_to pat(:delete), "#myModal", :method => :delete, :class => "btn btn-danger btn-mini",  :'data-toggle' => "modal", :'data-name' => "<%%= @orm.name_singular %>" %> |
+            <%%= button_to pat(:edit), url(:<%= @orm.name_plural %>, :edit, :id => <%= @orm.name_singular %>.id), :method => :get, :class => "btn btn-mini" %>
 			<div class="modal hide" id="myModal">
 			  <div class="modal-header">
 			    <a class="close" data-dismiss="modal">×</a>
