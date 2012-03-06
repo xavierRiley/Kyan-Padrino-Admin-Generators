@@ -81,7 +81,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         # based on naming convention of 'publish' add in published scope
         @orm.column_fields.each do |model_field|
           if model_field[:name].to_s == 'publish'
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "  scope :published, lambda { where(\"publish = ?\", true).order(\"position ASC\") }\n", :after => "    \#scopes\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "    scope :published, lambda { where(\"publish = ?\", true).order(\"position ASC\") }\n", :after => "    \#scopes\n"
           end
         end
 
@@ -91,10 +91,11 @@ class KyanAdminPage < Padrino::Generators::AdminPage
           if model_field[:name].to_s == 'position'
             require_dependencies('acts_as_list')
             gsub_file destination_root("/admin/controllers/#{@orm.name_plural}.rb"), "#{@orm.name_singular.capitalize}.all", "#{@orm.name_singular.capitalize}.find(:all, :order => 'position')"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  validates_uniqueness_of :#{model_field[:name]}\n", :after => "    \#validates_uniqueness_of\n"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  acts_as_list :order => \"#{model_field[:name]}\"\n", :after => "    \#Carrierwave\n"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  after_create :initialize_position\n", :after => "    \#afer_create\n"
-            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"  def initialize_position\n    self.position = #{@orm.name_singular.capitalize}.maximum(:#{model_field[:name]}) + 1\n  end\n", :after => "  private\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"    validates_uniqueness_of :#{model_field[:name]}\n", :after => "    \#validates_uniqueness_of\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"    acts_as_list :order => \"#{model_field[:name]}\"\n", :after => "    \#Carrierwave\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"    after_create :initialize_position\n", :after => "    \#afer_create\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"    def initialize_position\n    self.position = #{@orm.name_singular.capitalize}.maximum(:#{model_field[:name]}) + 1\n  end\n", :after => "  private\n"
+            inject_into_file destination_root("models/#{@orm.name_singular}.rb"), "    default_scope :order => \"position ASC\"\n", :after => "    \#scopes\n"
           end
         end
 

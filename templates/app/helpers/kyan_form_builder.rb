@@ -17,6 +17,132 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
   #     field_html << check_box(field, options)
   #     @template.content_tag(:div, field_html, :class => 'group')
   # end
+  
+  def gallery_block(field, options={}, label_options={})
+      label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
+      options[:class] = prepare_class_options(options[:class], ['thumbnail_gallery', field.to_s])
+      field_html = label(field, label_options)
+      field_html << error_message_on(field)
+      image_list_html = ''
+      options[:image_models].each do |image_model|
+        if image_model.send(options[:upload_field_name].to_sym).class.to_s == 'Uploader' and not image_model.send(options[:upload_field_name].to_sym).url.nil?
+          if image_model.send(options[:upload_field_name].to_sym).versions.include? :admin_thumb
+            image_option = ''
+            image_option << @template.content_tag(:img, '', :width => '80', :src => image_model.send(options[:upload_field_name].to_sym).admin_thumb.url, :class => 'preview admin_thumb')
+            modal_options = ''
+            modal_options << @template.content_tag(:a, 'Edit', :'data-method' => 'edit', :href => '#myModal_a', :'data-toggle' => 'modal', :rel => 'nofollow', :class => 'btn')
+            modal_options << @template.content_tag(:a, 'Delete', :href => '#deleteLink', :class => 'btn btn-danger')
+            modal_options = @template.content_tag(:div, modal_options, :class => 'options')
+            item_wrap = ''
+            item_wrap = @template.content_tag(:div, image_option + "\n" + modal_options, :class => 'item_wrap')
+            modal_window = ''
+            modal_window << <<-MODAL
+        <div class="modal hide fade" id="myModal_a">
+          <div class="modal-header">
+            <a class="close" data-dismiss="modal">x</a>
+            <h3>Edit photo</h3>
+          </div>
+          <div class="modal-body">
+            <label>Caption</label>
+            <input type="text"/>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-success" data-dismiss="modal" >Save</a>
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+          </div>
+        </div>
+        MODAL
+          image_list_html << @template.content_tag(:li, item_wrap + "\n" + modal_window)
+          end #end test for Uploader
+          image_list_html << <<-ADD_IMAGE
+		<li class="add_new">
+			<div class="item_wrap">
+				<a class="btn" rel="nofollow" data-toggle="modal" href="#myModal_a" data-method="edit">Create new</a>
+			</div>
+			<div class="modal hide fade" id="create_new">
+			  <div class="modal-header">
+			    <a class="close" data-dismiss="modal">x</a>
+			    <h3>Add Image</h3>
+			  </div>
+			  <div class="modal-body">
+					<label>Caption</label>
+					<input type="text"/>
+			  </div>
+			  <div class="modal-footer">
+			    <a href="#" class="btn btn-success" data-dismiss="modal" >Save</a>
+			    <a href="#" class="btn" data-dismiss="modal">Close</a>
+			  </div>
+			</div>
+		</li>
+        ADD_IMAGE
+        end
+      end
+      field_html << @template.content_tag(:ul, image_list_html)
+      @template.content_tag(:fieldset, field_html, :class => 'thumbnail_gallery')
+  end
+
+  def documents_block(field, options={}, label_options={})
+    label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
+    options[:class] = prepare_class_options(options[:class], ['thumbnail_gallery', field.to_s])
+    field_html = label(field, label_options)
+    field_html << error_message_on(field)
+    document_list_html = ''
+    options[:document_models].each do |document_model|
+      if document_model.send(options[:upload_field_name].to_sym).class.to_s == 'Uploader' and not document_model.send(options[:upload_field_name].to_sym).url.nil?
+        document_option = ''
+        document_option << @template.content_tag(:p, document_model.send(options[:upload_field_name].to_sym).url, :class => 'document')
+        modal_options = ''
+        modal_options << @template.content_tag(:a, 'Edit', :'data-method' => 'edit', :href => '#myModal_a', :'data-toggle' => 'modal', :rel => 'nofollow', :class => 'btn')
+        modal_options << @template.content_tag(:a, 'Delete', :href => '#deleteLink', :class => 'btn btn-danger')
+        modal_options = @template.content_tag(:div, modal_options, :class => 'options')
+        item_wrap = ''
+        item_wrap = @template.content_tag(:div, document_option + "\n" + modal_options, :class => 'item_wrap')
+        modal_window = ''
+        modal_window << <<-MODAL
+    <div class="modal hide fade" id="myModal_a">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        <h3>Edit photo</h3>
+      </div>
+      <div class="modal-body">
+        <label>Caption</label>
+        <input type="text"/>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-success" data-dismiss="modal" >Save</a>
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+    MODAL
+        document_list_html << @template.content_tag(:li, item_wrap + "\n" + modal_window)
+      end
+    end
+    document_list_html << <<-ADD_DOCUMENT
+<li class="add_new">
+  <div class="item_wrap">
+    <a class="btn" rel="nofollow" data-toggle="modal" href="#myModal_a" data-method="edit">Create new</a>
+  </div>
+  <div class="modal hide fade" id="create_new">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">x</a>
+      <h3>Edit photo</h3>
+    </div>
+    <div class="modal-body">
+      <label>Caption</label>
+      <input type="text"/>
+      
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-success" data-dismiss="modal" >Save</a>
+      <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+  </div>
+</li>
+    ADD_DOCUMENT
+    document_list_html = @template.content_tag(:ul, document_list_html)
+    field_html << @template.content_tag(:div, document_list_html, :class => 'document_list')
+    @template.content_tag(:fieldset, field_html)
+  end
 
   def boolean_block(field, options={}, label_options={})
       label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
@@ -53,7 +179,7 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
 
       if @object.send(field.to_sym).class.to_s == 'Uploader' and not @object.send(field.to_sym).url.nil?
         if @object.send(field.to_sym).versions.include? :admin_thumb
-          field_html << @template.content_tag(:img, '', :width => '80', :src => @object.send(field.to_sym).admin_thumb.url, :class => 'preview admin_thumb')
+          field_html << @template.content_tag(:img, '', :width => '80', :src => @object.send(field.to_sym).admin_thumb.url, :class => 'preview clear admin_thumb')
           field_html << '<br /><br />'
           field_html << @template.content_tag(:span, 'Upload Replacement')
           field_html << '<br /><br />'
