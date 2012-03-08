@@ -161,17 +161,9 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
         if @object.send(field.to_sym).versions.include? :admin_thumb
         field_html << '<div class="control-group">'
           field_html << @template.content_tag(:img, '', :width => '80', :src => @object.send(field.to_sym).admin_thumb.url, :class => 'preview clear admin_thumb')
-<<<<<<< HEAD
-          field_html << '<br />'
-          field_html << @template.content_tag(:span, 'Upload Replacement')
-          field_html << '<br />'
-          field_html << file_field(field, :class => css_class_options)
-          field_html << '<br />'
-=======
           field_html << @template.content_tag(:h5, 'Upload Replacement')
           field_html << file_field(field, :class => css_class_options)
           field_html << '<label class="checkbox">'
->>>>>>> 0ecbae2afefa2e5fa831b042bbfdf821459951b5
           field_html << check_box("remove_#{field}")
           field_html << @template.content_tag(:span, 'Remove Image?')
           field_html << '</label>'
@@ -201,16 +193,8 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
         field_html << '<div class="control-group">'
         field_html << @template.content_tag(:img, '', :width => '80', :src => '/admin/newimg/report.png', :class => 'preview')
         field_html << @template.content_tag(:span, @object.send(field.to_sym).path )
-<<<<<<< HEAD
-        field_html << '<br />'
-        field_html << @template.content_tag(:span, 'Upload Replacement')
-        field_html << '<br />'
-        field_html << file_field(field, :class => css_class_options)
-        field_html << '<br />'
-=======
         field_html << @template.content_tag(:h5, 'Upload Replacement')
         field_html << file_field(field, :class => css_class_options)
->>>>>>> 0ecbae2afefa2e5fa831b042bbfdf821459951b5
         field_html << check_box("remove_#{field}")
         field_html << '</div>'
       else

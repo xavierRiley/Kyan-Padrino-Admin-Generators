@@ -57,8 +57,6 @@ class Admin < Padrino::Application
         return link_to args[0], args[1], options
       end
       if name == 'Delete'
-        options[:class] = 'delete'
-        options[:onclick] = 'return confirm(\'Are you sure?\')'
         return link_to args[0], args[1], options
       end
       inner_form_html  = hidden_form_method_field(desired_method)

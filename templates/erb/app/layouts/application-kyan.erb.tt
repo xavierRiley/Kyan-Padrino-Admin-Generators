@@ -14,7 +14,7 @@
 				<%#= link_to "Padrino Admin", url(:base_index), :class => 'cms_title' %>
 			</div>
 		</div>
-		<div class="navbar navbar-fixed-top">
+		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
 					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="subnav subnav-fixed">
+		<div class="subnav">
 			<div class="container">
 				<ul class="nav nav-pills">
 					<%% project_modules.each do |project_module| %>
@@ -50,9 +50,10 @@
 		
 	<div class="content">
 		<div class="content_main">
-			<div class="flash">
+      <div class="alert">
+        <a class="close" data-dismiss="alert">×</a>
 				<%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
-			</div>
+      </div>
 			<%%= yield %>
 		</div>
 		<div class="footer">
