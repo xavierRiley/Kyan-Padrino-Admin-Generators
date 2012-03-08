@@ -1025,27 +1025,68 @@ body { padding-top:0;  }
 
 /* Kyan CMS Specific */
 
-#content_wrap { background:#ffffff; clear:both; overflow:hidden; border:1px solid #e4e4e4; -webkit-border-radius:4px; -moz-border-radius:4px; -o-border-radius:4px; -html-border-radius:4px; -ms-border-radius:4px; border-radius:4px; padding:25px;  }
+#content_wrap { background:#ffffff; clear:both; overflow:hidden; border:1px solid #e4e4e4; -webkit-border-radius:4px; -moz-border-radius:4px; -o-border-radius:4px; -html-border-radius:4px; -ms-border-radius:4px; border-radius:4px; padding:25px; }
 .content_main { margin-bottom:20px; }
 .footer { text-align: center;}
 .actions { float:right; list-style:none; margin:5px 0 0; }
 
 input[type="text"],
 input.text,
-textarea { background:#fdfdfd; font-family:"Helvetica Neue","Helvetica",Arial,sans-serif; color:#383838; border:1px solid #d5d5d5; width:100%; padding:7px; font-size:14px; margin-bottom:17px; height:35px; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box;  }
+textarea { background:#fdfdfd; font-family:"Helvetica Neue","Helvetica",Arial,sans-serif; color:#383838; border:1px solid #d5d5d5; width:100%; padding:7px; font-size:14px; margin-bottom:17px; height:35px; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; }
 input[type="text"]:focus,
 input.text:focus,
 textarea:focus { outline:none; border-color:#92c0df; background:#ffffff; moz-box-shadow:inset 0px 0px 0px #d3d3d3; /* FF3.5+ */
 -webkit-box-shadow:inset 0px 0px 0px #d3d3d3; /* Saf3.0+,Chrome */
 box-shadow:inset 0px 0px 0px #d3d3d3; /* Opera 10.5,IE 9.0 */ }
-#filter_container input {  }
+
+.thumbnail_gallery { width:100%; overflow:hidden; margin-left:-1%; }
+.thumbnail_gallery ul { margin:0; width:100%; overflow:hidden; padding:20px 0; }
+.thumbnail_gallery li { list-style:none; float:left; display:block; width:13%; margin-bottom:10px; margin-left:1%; overflow:hidden; border:1px solid #e5e5e5; }
+.thumbnail_gallery .item_wrap { position:relative; overflow:hidden; }
+.thumbnail_gallery .add_new { border:none; padding:20px 0; }
+.thumbnail_gallery .add_new a { display:block; margin:0 auto; }
+.thumbnail_gallery li img { padding:5px; }
+.thumbnail_gallery li:hover .options { top:0; text-align:center; }
+.thumbnail_gallery .options { position:absolute; top:-100%; height:100%; width:100%; -webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box; padding:18px 0 0; }
+.thumbnail_gallery .btn { padding:3px 7px; margin-right:1px; }
+
+
+.document_list {
+border-top: 1px solid #e5e5e5;
+}
+
+.document_list li {
+overflow:hidden;
+list-style: none;
+width: 100%;
+border-bottom: 1px solid #e5e5e5;
+}
+
+.document_list li p {
+float: left;
+margin: 0;
+padding: 16px 0 0;
+font-weight: bold;
+}
+
+.document_list ul {
+margin: 0;
+}
+
+.document_list li .options {
+float: right;
+padding: 10px 0;
+}
+
+/
 
 /* login page */
 
-#login_page { background:#f9f9f9 url('/admin/newimg/bg_login_page.png') 0px 130px repeat-x;  }
-#login_box { background:url('/admin/newimg/bg_login_form_shadow.png') 50% 0 no-repeat; height:546px; margin:0 auto; padding-left:0;  }
-#login_box .login { position:relative; top:50px; width:358px; height:222px; margin:0 auto;  }
-#login_box .navform { margin-top:-10px; float:right;  }
+#login_page { background:#f9f9f9 url('/admin/newimg/bg_login_page.png') 0px 130px repeat-x; }
+#login_box { background:url('/admin/newimg/bg_login_form_shadow.png') 50% 0 no-repeat; height:546px; margin:0 auto; padding-left:0; }
+#login_box .login { position:relative; top:50px; width:358px; height:222px; margin:0 auto; }
+#login_box .navform { margin-top:-10px; float:right; }
+
 
 
 /* MCE Editor edits */
@@ -1067,7 +1108,7 @@ box-shadow:inset 0px 0px 0px #d3d3d3; /* Opera 10.5,IE 9.0 */ }
 .defaultSkin td.mceCenter table {margin:0 auto; text-align:left;}
 .defaultSkin td.mceRight table {margin:0 0 0 auto;}
 
-.mceEditor { display:block; margin-bottom:20px;  }
-.mceLayout tr td:first-child { padding:0;  }
-#tinymce p { font-family:"Helvetica Neue","Helvetica",Arial,sans-serif !important; color:#383838 !important; font-size:14px !important;  }
-.mceContentBody { text-align:right; padding:10px;  }
+.mceEditor { display:block; margin-bottom:20px; }
+.mceLayout tr td:first-child { padding:0; }
+#tinymce p { font-family:"Helvetica Neue","Helvetica",Arial,sans-serif !important; color:#383838 !important; font-size:14px !important; }
+.mceContentBody { text-align:right; padding:10px; }

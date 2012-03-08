@@ -100,7 +100,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         end
 
         ## Basic Date Support
-        # based on naming convention of 'position' add in acts as list support
+        # based on naming convention of '_date' add in validations
         @orm.column_fields.each do |model_field|
           if model_field[:name].to_s == '_date'
             gsub_file destination_root("/admin/controllers/#{@orm.name_plural}.rb"), "#{@orm.name_singular.capitalize}.all", "#{@orm.name_singular.capitalize}.find(:all, :order => 'position')"
@@ -112,7 +112,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         #Leave the index page till and remove columns based on questions
         #Ask about which fields to display for everything except accounts
         if @orm.name_plural != 'accounts' and ask("Do you want to specify which columns to display for the #{@orm.name_plural} index page? (y|n)", :display_all, :red) == 'y'
-          @ignoreFields = ['id']
+          @ignoreFields = ['id', 'permalink']
           @orm.columns.each do |model_field|
             if ask("Display #{model_field.name.to_s}? (y|n)", :no, :red) != 'y'
               @ignoreFields << model_field.name
@@ -121,7 +121,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
           template "templates/#{ext}/page/index.#{ext}.tt", destination_root("/admin/views/#{@orm.name_plural}/index.#{ext}")
         else
           #Add sensible defaults - ignore ID and text areas
-          @ignoreFields = ['id']
+          @ignoreFields = ['id', 'permalink']
           @orm.columns.each do |model_field|
             if model_field.type.to_s.include?('text')
               @ignoreFields << model_field.name

@@ -37,6 +37,12 @@ class Admin < Padrino::Application
   access_control.roles_for :admin do |role|
   end
 
+  before do
+    if params[:layout] == 'false' or request.xhr?
+      @layout = :'application-ajax'
+    end
+  end
+
   #override buttons in admin
   module Padrino::Helpers::AssetTagHelpers
     def button_to(*args, &block)
