@@ -105,9 +105,9 @@ class KyanAdminApp < Padrino::Generators::AdminApp
       gsub_file destination_root("admin/controllers/accounts.rb"), "if account.destroy", "if account != current_account && account.destroy"
       return if self.behavior == :revoke
 
-      # if ask("Would you like to add carrierwave support? (y|n)", :no, :red) == 'y'
-      run("padrino g plugin https://raw.github.com/xavierRiley/padrino-recipes/master/plugins/carrierwave_plugin.rb")
-      # end
+      if ask("Would you like to add carrierwave support? (y|n)", :no, :red) == 'y'
+        run("padrino g plugin https://raw.github.com/xavierRiley/padrino-recipes/master/plugins/carrierwave_plugin.rb")
+      end
 
       instructions = []
       instructions << "Run 'padrino rake ar:migrate'" if orm == :activerecord
