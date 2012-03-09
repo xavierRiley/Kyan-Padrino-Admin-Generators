@@ -42,7 +42,7 @@
         <%%- <%= relationship[0].to_s.singularize.camelize %>.all.each do |choice| -%>
           <div>
             <%%= check_box_tag "<%= @orm.name_singular.to_s %>[<%= relationship[0].to_s.singularize %>_ids][]", :value => choice.id, :checked => @<%= @orm.name_singular %>.<%= relationship[0].to_s.pluralize %>.include?(choice) %>
-            <%%= choice.<%= @orm.column_fields.first.keys.first.to_s %> %>
+            <%%= choice.<%= relationship[0].to_s.singularize.camelize.constantize.column_names.second %> %>
           </div>
         <%%- end -%>
       <%- end -%>
@@ -51,6 +51,6 @@
   <%- end -%>
   <div class="group navform wat-cf form_send">
     <%%= f.image_submit "/admin/newimg/button_save.png", :class => :submit, :alt => "Save" %>
-    <%%= f.image_submit "/admin/newimg/button_cancel.png", :onclick => 'window.location="#{url(:<%= @orm.name_plural %>, :index)}";return false', :class => :submit %>
+    <%%= f.image_submit "/admin/newimg/button_cancel.png", :onclick => "window.location='#{url(:<%= @orm.name_plural %>, :index)}';return false", :class => :submit %>
   </div>
 </div>

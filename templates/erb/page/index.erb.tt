@@ -59,7 +59,7 @@
             <%- end -%>
           <%- end -%>
           <td class="last">
-            <%%= button_to pat(:delete), "#myModal", :method => :delete, :class => "btn btn-danger btn-mini",  :'data-toggle' => "modal", :'data-name' => "<%= @orm.name_singular %>" %> |
+            <%%= button_to pat(:delete), url(:<%= @orm.name_plural %>, :destroy, :id => <%= @orm.name_singular %>.id), :method => :delete, :class => "btn btn-danger btn-mini",  :'data-toggle' => "modal", :'data-name' => "<%= @orm.name_singular %>" %> |
             <%%= button_to pat(:edit), url(:<%= @orm.name_plural %>, :edit, :id => <%= @orm.name_singular %>.id), :method => :get, :class => "btn btn-mini" %>
 			<div class="modal hide" id="myModal">
 			  <div class="modal-header">

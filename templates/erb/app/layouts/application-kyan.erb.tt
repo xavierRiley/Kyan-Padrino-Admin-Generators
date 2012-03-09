@@ -50,10 +50,12 @@
 		
 	<div class="content">
 		<div class="content_main">
+      <%%- unless flash.empty? -%>
       <div class="alert">
         <a class="close" data-dismiss="alert">×</a>
 				<%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
       </div>
+      <%%- end -%>
 			<%%= yield %>
 		</div>
 		<div class="footer">

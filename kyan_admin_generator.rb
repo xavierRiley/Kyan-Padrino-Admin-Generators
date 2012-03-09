@@ -97,6 +97,7 @@ class KyanAdminApp < Padrino::Generators::AdminApp
       template "templates/#{ext}/app/base/_sidebar-kyan.#{ext}.tt",       destination_root("admin/views/base/_sidebar.#{ext}")
       template "templates/#{ext}/app/base/index-kyan.#{ext}.tt",          destination_root("admin/views/base/index.#{ext}")
       template "templates/#{ext}/app/layouts/application-kyan.#{ext}.tt", destination_root("admin/views/layouts/application.#{ext}")
+      template "templates/#{ext}/app/layouts/application-ajax.#{ext}.tt", destination_root("admin/views/layouts/application-ajax.#{ext}")
       template "templates/#{ext}/app/sessions/new.#{ext}.tt",        destination_root("admin/views/sessions/new.#{ext}")
 
       add_project_module :accounts

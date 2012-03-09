@@ -19,6 +19,10 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
   # end
   
   def gallery_block(field, options={}, label_options={})
+    #required options
+    # upload_field_name
+    # image_models
+    # image_class
       label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
       options[:class] = prepare_class_options(options[:class], ['thumbnail_gallery', field.to_s])
       field_html = label(field, label_options)
@@ -35,25 +39,14 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
             modal_options = @template.content_tag(:div, modal_options, :class => 'options')
             item_wrap = ''
             item_wrap = @template.content_tag(:div, image_option + "\n" + modal_options, :class => 'item_wrap')
-            modal_window = ''
-            modal_window << <<-MODAL
-        <div class="modal hide fade" id="myModal_#{image_model.id}">
-          <div class="modal-header"> <a class="close" data-dismiss="modal">x</a> <h3>Edit image</h3> </div>
-          <div class="modal-body">
-            <label>Caption</label>
-            <input type="text"/>
-          </div>
-          <div class="modal-footer"> <a href="#" class="btn btn-success">Save</a> <a href="#" class="btn" data-dismiss="modal">Close</a> </div>
-        </div>
-        MODAL
-          image_list_html << @template.content_tag(:li, item_wrap + "\n" + modal_window)
+            image_list_html << @template.content_tag(:li, item_wrap)
           end #end test for Uploader
         end
       end
       image_list_html << <<-ADD_IMAGE
 		<li class="add_new">
 			<div class="item_wrap">
-				<a class="btn create" rel="nofollow" data-toggle="modal" href="#{@template.url(options[:image_models].first.class.to_s.pluralize.underscore.to_sym, :new)}" data-method="edit" data-exclude=".form_send">Create new</a>
+				<a class="btn create" rel="nofollow" data-target="\#" data-toggle="modal" href="#{@template.url(options[:image_class].to_s.pluralize.underscore.to_sym, :new)}" data-method="edit" data-exclude=".form_send">Create new</a>
 			</div>
 		</li>
       ADD_IMAGE

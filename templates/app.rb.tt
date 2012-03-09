@@ -43,6 +43,17 @@ class Admin < Padrino::Application
     end
   end
 
+  get :destroy, :map => "/:model_name/destroy/:id" do
+    <<-DELETE_REDIRECT
+    <div id="content_wrap">
+      <div class="content">
+        <h1>Delete - are you sure?</h1>
+        #{button_to 'Confirm', url(params[:model_name].to_sym, :destroy, :id => params[:id].to_sym), :method => :delete, :class => :button_to}
+      </div>
+    </div>
+    DELETE_REDIRECT
+  end
+
   #override buttons in admin
   module Padrino::Helpers::AssetTagHelpers
     def button_to(*args, &block)

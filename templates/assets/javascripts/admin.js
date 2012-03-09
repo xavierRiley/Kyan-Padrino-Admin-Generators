@@ -40,7 +40,7 @@ $('document').ready(function() {
     var modal_header = $('<div class="modal-header"><a class="close" data-dismiss="modal">x</a> <h3>Edit image</h3></div>');
     var modal_body = $('<div class="modal-body" />');
     var modal_footer = $('<div class="modal-footer"><a href="#" class="btn btn-success">Save</a> <a href="#" class="btn" data-dismiss="modal">Close</a></div>');
-    var iframe = $('<iframe src="' + href + '" id="modal-iframe" frameborder="0" height="300" width="400" />').on('load', function() {
+    var iframe = $('<iframe src="' + href + '" id="modal-iframe" frameborder="0" height="350" width="400" />').on('load', function() {
       if (iframe.contents().find('.message.notice').length > 0) {
           modal_container.on('hidden', function() {
             $('fieldset.thumbnail_gallery').load(window.location.href + ' .thumbnail_gallery');

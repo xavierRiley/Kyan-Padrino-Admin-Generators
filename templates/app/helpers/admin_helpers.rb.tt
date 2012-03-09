@@ -17,6 +17,15 @@ Admin.helpers do
     end
   end
 
+  ## Gives a suitable name for whatever model you throw at it.
+  def admin_name_for(model_class_or_instance)
+    if model_class_or_instance.class == 'Class'
+      model_class_or_instance.column_names.second.to_s
+    else
+      model_class_or_instance.send(model_class_or_instance.class.column_names.second.to_sym)
+    end
+  end
+
   def admin_position_widget(model = nil)
     if model.respond_to? :position
       html = ''
