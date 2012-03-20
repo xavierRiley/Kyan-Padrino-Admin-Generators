@@ -43,15 +43,21 @@ class Admin < Padrino::Application
     end
   end
 
-  get :destroy, :map => "/:model_name/destroy/:id" do
-    <<-DELETE_REDIRECT
-    <div id="content_wrap">
-      <div class="content">
-        <h1>Delete - are you sure?</h1>
-        #{button_to 'Confirm', url(params[:model_name].to_sym, :destroy, :id => params[:id].to_sym), :method => :delete, :class => :button_to}
+  get :destroy, :map => "/:model_name/destroy(/:id)" do
+    if params[:model_name] == 'sessions'
+      set_current_account(nil)
+      redirect url(:sessions, :new)
+    else
+      # The delete buttons throughout the site rely on a bootstrap modal window so the following is a halfway house
+      <<-DELETE_REDIRECT
+      <div id="content_wrap">
+        <div class="content">
+          <h1>Delete - are you sure?</h1>
+          #{button_to 'Confirm', url(params[:model_name].to_sym, :destroy, :id => params[:id].to_sym), :method => :delete, :class => :button_to}
+        </div>
       </div>
-    </div>
-    DELETE_REDIRECT
+      DELETE_REDIRECT
+    end
   end
 
   #override buttons in admin

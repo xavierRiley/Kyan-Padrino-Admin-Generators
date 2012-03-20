@@ -4,7 +4,7 @@
     <fieldset id="<%= column[:name] %>_fieldset" class="kyanadmin">
     <%- end -%>
       <%- if column[:name].to_s.index('_img') -%>
-        <%%= f.image_upload_block :<%= column[:name] %>, :caption => '<%= column[:name].gsub('_img', '').capitalize %>:' %>
+        <%%= f.image_upload_block :<%= column[:name] %>, :caption => '<%= column[:name].gsub('_img', '_image').capitalize %>:' %>
       <%- elsif column[:name].to_s.index('_file') -%>
         <%%= f.file_upload_block :<%= column[:name] %>, :caption => '<%= column[:name].gsub('_file', '').capitalize %>' %>
       <%- elsif column[:name].to_s.index('_mce') -%>
