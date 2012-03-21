@@ -3,8 +3,8 @@
   <ul class="actions">
     <li><%%= link_to pat(:create_new), url(:<%= @orm.name_plural %>, :new), :class => "btn btn-primary" %></li>
   </ul>
-  <div id="filter_container">
-    <input type="text" id="filter" />
+  <div id="filter_container" class="input-prepend">
+    <span class="add-on">Search</span><input type="text" id="filter" placeholder="Type here to filter the items below..." />
   </div>
 </div>
   <div class="content">
