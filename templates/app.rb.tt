@@ -41,6 +41,9 @@ class Admin < Padrino::Application
     if params[:layout] == 'false' or request.xhr?
       @layout = :'application-ajax'
     end
+
+    #Global Variables for SEO
+    @company_name = 'Company Name'
   end
 
   get :destroy, :map => "/:model_name/destroy(/:id)" do
