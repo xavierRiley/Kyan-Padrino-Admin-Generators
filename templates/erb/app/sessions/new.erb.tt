@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Kyan Admin</title>
   <%%= stylesheet_link_tag "themes/kyan-default/core" %>
-  <%%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/jquery.valclassate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.valclassate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js", "admin.js", "bootstrap-collapse.js" %>
+  <%%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "tiny_mce/jquery.tinymce.js", "admin.js", "bootstrap-plugins.js" %>
 </head>
 <body id="login_page">
 	<div class="header">
@@ -14,7 +14,7 @@
 				<%#= link_to "Padrino Admin", url(:base_index), :class => 'cms_title' %>
 			</div>
 		</div>
-		<div class="navbar navbar-fixed-top">
+		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
 					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -22,17 +22,17 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="/admin">Kyan CMS</a>
+          <a class="brand" href="/admin">Kyan CMS<span><%%= @company_name %></span></a>
 					<div class="nav-collapse">
 						<ul class="nav admin_nav pull-right">
-							<li><%%= link_to pat(:accounts), url(:accounts, :index) %></li>		  
+							<li><%%= link_to pat(:accounts), url(:accounts, :index) %></li>
 							<li><%%= link_to pat(:logout), url(:sessions, :destroy), :method => :delete, :class => :button_to %></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="subnav subnav-fixed">
+		<div class="subnav">
 			<div class="container">
 				<ul class="nav nav-pills">
 					<%% project_modules.each do |project_module| %>
@@ -46,64 +46,53 @@
 		</div>
 	</div>
 	
-	<div class="container">
+	<div class="page_container">
 		
 	<div class="content">
-		<div class="content_main">
+		<div class="flash">
+			<%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+		</div>
+		  <div class="login">
 			<div class="flash">
-				<%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+			  <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
 			</div>
-			<div id="login_box" class="block">
-			  <div class="content login">
-				<div class="flash">
-				  <%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %>
+			<%% form_tag(url(:sessions, :create), :class => 'form login') do %>
+			  <fieldset>
+			  <div class="input_group">
+				<div class="left">
+				  <label class="right">Login</label>
 				</div>
-				<%% form_tag(url(:sessions, :create), :class => 'form login') do %>
-				  <fieldset>
-				  <div class="group wat-cf">
-					<div class="left">
-					  <label class="right">Login</label>
-					</div>
-					<div class="right">
-					  <%%= text_field_tag :email, :value => params[:email], :class => 'text' %>
-					</div>
-				  </div>
-				  <div class="group wat-cf">
-					<div class="left">
-					  <label class="right">Password</label>
-					</div>
-					<div class="right">
-					  <%%= password_field_tag :password, :value => params[:password], :class => 'text' %>
-					</div>
-				  </div>
-				  <%% if Padrino.env == :development %>
-					<div class="group wat-cf">
-					  <div class="left">
-						<label class="right">Bypass login?</label>
-					  </div>
-					  <div class="right">
-						<%%= check_box_tag :bypass %>
-					  </div>
-					</div>
-				  <%% end %>
-				  <div class="group navform wat-cf">
-					<div class="right">
-					  <%%= image_submit_tag('/admin/newimg/button_login_big.png', :class => 'button submit') %>
-					</div>
-				  </div>
-				  </fieldset>
-				<%% end %>
+				<div class="right">
+				  <%%= text_field_tag :email, :value => params[:email], :class => 'text' %>
+				</div>
 			  </div>
-			</div>
-			
-		</div>
-		<div class="footer">
-			<div class="block">
-				<p>Copyright &copy; <%= Time.now.year %> Kyanmedia</p>
-			</div>
-		</div>
+			  <div class="input_group">
+				<div class="left">
+				  <label class="right">Password</label>
+				</div>
+				<div class="right">
+				  <%%= password_field_tag :password, :value => params[:password], :class => 'text' %>
+				</div>
+			  </div>
+			  <%% if Padrino.env == :development %>
+				<div class="checkbox_group">
+				  <div class="left">
+					<label class="right">Bypass login?</label>
+				  </div>
+				  <div class="right">
+					<%%= check_box_tag :bypass %>
+				  </div>
+				</div>
+			  <%% end %>
+			  <div class="button_group">
+				<div class="right">
+					<input class="btn btn-large btn-primary" type="submit" value="Submit">
+				</div>
+			  </div>
+			  </fieldset>
+			<%% end %>
+		  </div>
 	</div>
-	
 	</div>
 </body>
 </html>
