@@ -1,7 +1,8 @@
 Admin.controllers :base do
 
   get :index, :map => "/" do
-    render "base/index"
+    default_page = project_modules.first
+    redirect "admin" + default_page.path
   end
   
   get :toggle, :map => "toggle/:model_name/:field_name/:id" do

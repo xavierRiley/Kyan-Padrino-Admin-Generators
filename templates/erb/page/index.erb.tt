@@ -25,7 +25,7 @@
         <tr class="<%%= (index % 2 == 0 ? 'odd' : 'even') %>" >
           <%- (@ignoreFields.nil? ? @orm.columns : @orm.columns.delete_if{|col| @ignoreFields.include? col.name }).each_with_index do |column, i| -%>
             <%- unless @ignoreFields.nil? == false and @ignoreFields.include? column.name -%>
-              <%- if column.name.to_s.include?('_file') or column.name.to_s.include?('_img') -%>
+              <%- if column.name.to_s.include?('_img') -%>
                 <%%if <%=  @orm.name_singular.to_s + '.' + column.name %>.class == Uploader and not <%=  @orm.name_singular.to_s + '.' + column.name %>.url.nil? %>
                   <td class="fixed <%%= " first" if index==0 %>">
                     <%% if <%= @orm.name_singular %>.<%= column.name %>.versions.include? :admin_thumb %>
@@ -37,6 +37,16 @@
                 <%% else %>
                   <td class="fixed <%%= " first" if index==0 %>">
                     <%%= <%= @orm.name_singular %>.<%= column.name %>.to_s %>
+                  </td>
+                <%% end %>
+              <%- elsif column.name.to_s.include?('_file') -%>
+                <%% if <%=  @orm.name_singular.to_s + '.' + column.name %>.class == Uploader and not <%=  @orm.name_singular.to_s + '.' + column.name %>.url.nil? %>
+                  <td class="fixed <%%= " first" if index==0 %>">
+                    <%%= File.basename(<%= @orm.name_singular %>.<%= column.name %>.path) %>
+                  </td>
+                <%% else %>
+                  <td class="fixed <%%= " first" if index==0 %>">
+                    <%%= <%= @orm.name_singular %>.<%= column.name %> %>
                   </td>
                 <%% end %>
               <%- elsif column.type.to_s.include?('boolean') -%>
