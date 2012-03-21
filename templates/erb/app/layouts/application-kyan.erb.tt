@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Kyan Admin</title>
   <%%= stylesheet_link_tag "themes/kyan-default/core" %>
-  <%%= javascript_include_tag "fckeditor/fckeditor.js", "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "jqDateSelectBoxes_3/dateSelectBoxes.pack.js", "admin.js", "bootstrap-plugins.js" %>
+  <%%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js", "//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js", "tiny_mce/jquery.tinymce.js", "admin.js", "bootstrap-plugins.js" %>
 </head>
 <body>
 	<div class="header">
@@ -22,7 +22,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="/admin">Kyan CMS</a>
+					<a class="brand" href="/admin">Kyan CMS<span><%%= @company_name %></span></a>
 					<div class="nav-collapse">
 						<ul class="nav admin_nav pull-right">
 							<li><%%= link_to pat(:accounts), url(:accounts, :index) %></li>		  
