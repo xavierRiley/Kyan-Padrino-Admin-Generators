@@ -79,24 +79,6 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
     @template.content_tag(:div, field_html)
   end
 
-  def text_mce_block(field, options={}, label_options={})
-      label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
-      css_class_options = prepare_class_options(options[:class], ['text_area', field.to_s])
-      field_html = label(field, label_options)
-      field_html << error_message_on(field)
-      field_html << <<-EOF
-        <script type="text/javascript">
-          window.onload = function() {
-          var oFCKeditor = new FCKeditor('#{@object.class.name.demodulize.underscore}_#{field}');
-          oFCKeditor.BasePath = "/admin/javascripts/fckeditor/";
-          oFCKeditor.ReplaceTextarea();
-          }
-        </script>
-      EOF
-      field_html << text_area(field.to_sym, :class => css_class_options)
-      @template.content_tag(:div, field_html)
-  end
-
   def image_upload_block(field, options={}, label_options={})
       label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
       css_class_options = prepare_class_options(options[:class], ['upload', field])
@@ -161,16 +143,38 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
       field_html << error_message_on(field)
 
       if @object.send(field.to_sym).class.to_s == 'Uploader' and not @object.send(field.to_sym).url.nil?
-        field_html << @template.content_tag(:img, '', :width => '80', :src => '/admin/newimg/report.png', :class => 'preview')
-        field_html << @template.content_tag(:span, @object.send(field.to_sym).path )
-        field_html << '<br /><br />'
-        field_html << @template.content_tag(:span, 'Upload Replacement')
-        field_html << '<br /><br />'
+        field_html << '<div class="document_list"><ul><li>'
+        field_html << @template.content_tag(:p, File.basename(@object.send(field.to_sym).path) )
+        field_html << <<-EOF
+          <script type="text/javascript">
+            $('document').ready(function() {
+              $('.document_list .document-btn.delete').toggle(function(e) {
+                e.preventDefault();
+                linkButton = $(this);
+                linkButton.text('Undo').removeClass('btn-danger');
+                linkButton.parent().eq(0).css('opacity', 0.4);
+                linkButton.siblings('.remove_document').eq(0).val('1');
+                },
+                function(e) {
+                e.preventDefault();
+                linkButton = $(this);
+                var optionsContainer = linkButton.parent();
+                linkButton.text('Delete').addClass('btn-danger');
+                linkButton.parent().eq(0).css('opacity', 1);
+                linkButton.siblings('.remove_document').eq(0).val('0');
+              });
+            });
+          </script>
+          <a href="\#delete" data-method="edit" class="delete document-btn options btn btn-mini btn-danger">Delete</a>
+          <a href="#{@object.send(field.to_sym).url}" class="options btn btn-mini">Download</a>
+        EOF
+        field_html << hidden_field("remove_#{field}", :value=>'0', :class => 'remove_document')
+        field_html << '</li></ul>'
+        field_html << '<br />'
+        field_html << @template.content_tag(:h5, 'Upload Replacement')
         field_html << file_field(field, :class => css_class_options)
-        field_html << '<br /><br />'
-        field_html << check_box("remove_#{field}")
+        field_html << '</div>'
       else
-        field_html << @template.content_tag(:img, '', :width => '80', :src => '/admin/newimg/report.png', :class => 'preview')
         field_html << @template.content_tag(:span, 'No File Uploaded' )
         field_html << '<br /><br />'
         field_html << file_field(field, :class => css_class_options)

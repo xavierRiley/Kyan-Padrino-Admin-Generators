@@ -830,7 +830,7 @@ input, select, .uneditable-input { display:inline-block; width:210px; height:18p
 .document_list li { overflow:hidden; list-style:none; width:100%; border-bottom:1px solid #e5e5e5;  }
 .document_list li p { float:left; margin:0; padding:14px 0 0 14px; font-weight:bold;  }
 .document_list ul { margin:0; }
-.document_list li .options { float:right; padding:10px;  }
+.document_list li .options { float:right; margin:10px;  }
 .document_list li:nth-child(odd) { background:#F9F9F9;  }
 .document_list li.add_new { background: none; padding: 10px 0;}
 

@@ -99,7 +99,6 @@ class KyanAdminApp < Padrino::Generators::AdminApp
       template "templates/#{ext}/app/layouts/application-kyan.#{ext}.tt", destination_root("admin/views/layouts/application.#{ext}")
       template "templates/#{ext}/app/layouts/application-ajax.#{ext}.tt", destination_root("admin/views/layouts/application-ajax.#{ext}")
       template "templates/#{ext}/app/sessions/new.#{ext}.tt",        destination_root("admin/views/sessions/new.#{ext}")
-      directory "templates/#{ext}/app/kaminari",        destination_root("app", "views")
 
       add_project_module :accounts
       require_dependencies('bcrypt-ruby', :require => 'bcrypt')

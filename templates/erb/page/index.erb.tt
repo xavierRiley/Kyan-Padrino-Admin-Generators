@@ -1,5 +1,5 @@
 <div id="content_header" class="block">
-  <h1><%%= pat(:all) %> <%%= mt(:<%= @orm.name_plural %>) %></h1>
+  <h1><%%= pat(:all) %> <%%= mt(:<%= @orm.name_plural %>).downcase %></h1>
   <ul class="actions">
     <li><%%= link_to pat(:create_new), url(:<%= @orm.name_plural %>, :new), :class => "btn btn-primary" %></li>
   </ul>

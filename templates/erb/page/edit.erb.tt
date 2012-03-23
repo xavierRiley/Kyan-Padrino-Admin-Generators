@@ -1,5 +1,5 @@
 <div id="content_header" class="block">
-  <h1 class="title"><%%= pat(:edit) %> <%%= mt(:<%= @orm.name_singular %>) %></h1>
+  <h1 class="title"><%%= pat(:edit) %> <%%= mt(:<%= @orm.name_singular %>).downcase %></h1>
   <ul class="actions wat-cf">
     <li class="first"><%%= link_to "Cancel", url(:<%= @orm.name_plural %>, :index), :class=>"cancel_button" %></li>
   </ul>
