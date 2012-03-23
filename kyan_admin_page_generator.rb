@@ -112,7 +112,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         #Leave the index page till and remove columns based on questions
         #Ask about which fields to display for everything except accounts
         if @orm.name_plural != 'accounts' and ask("Do you want to specify which columns to display for the #{@orm.name_plural} index page? (y|n)", :display_all, :red) == 'y'
-          @ignoreFields = ['id', 'permalink']
+          @ignoreFields = ['id', 'permalink', 'created_at', 'updated_at']
           @orm.columns.each do |model_field|
             if ask("Display #{model_field.name.to_s}? (y|n)", :no, :red) != 'y'
               @ignoreFields << model_field.name

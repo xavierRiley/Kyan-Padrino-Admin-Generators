@@ -14,7 +14,7 @@
         <tr>
           <%- @orm.columns.each_with_index do |column, i| -%>
             <%- unless @ignoreFields.nil? == false and @ignoreFields.include? column.name -%>
-            <th class="header <%= " first" if i==0 %>"><%%= mat(:<%= @orm.name_singular %>, :<%= column.name.to_s.gsub('_img', '_image') %>) %></th>
+            <th class="header <%= " first" if i==0 %>"><%%= mat(:<%= @orm.name_singular %>, :<%= column.name.to_s.gsub('_img', ' image').gsub('_file', ' file') %>) %></th>
             <%- end -%>
           <%- end -%>
           <th class="last">&nbsp;</th>
