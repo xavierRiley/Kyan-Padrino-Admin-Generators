@@ -17,105 +17,6 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
   #     field_html << check_box(field, options)
   #     @template.content_tag(:div, field_html, :class => 'group')
   # end
-  
-  def gallery_block(field, options={}, label_options={})
-    #required options
-    # upload_field_name
-    # image_models
-    # image_class
-      label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
-      options[:class] = prepare_class_options(options[:class], ['thumbnail_gallery', field.to_s])
-      field_html = label(field, label_options)
-      field_html << error_message_on(field)
-      image_list_html = ''
-      options[:image_models].each do |image_model|
-        if image_model.send(options[:upload_field_name].to_sym).class.to_s == 'Uploader' and not image_model.send(options[:upload_field_name].to_sym).url.nil?
-          if image_model.send(options[:upload_field_name].to_sym).versions.include? :admin_thumb
-            image_option = ''
-            image_option << @template.content_tag(:img, '', :width => '80', :src => image_model.send(options[:upload_field_name].to_sym).admin_thumb.url, :class => 'preview admin_thumb')
-            modal_options = ''
-            modal_options << @template.content_tag(:a, 'Edit', :'data-target' => '#',:'data-method' => 'edit', :href => @template.url(image_model.class.to_s.pluralize.underscore.to_sym, :edit, :id => image_model.id) + '?layout=false', :'data-toggle' => 'modal', :rel => 'nofollow', :'data-exclude' => '.form_send,#machine_id_fieldset', :class => 'btn edit', :title => image_model.caption)
-            modal_options << @template.content_tag(:a, 'Delete', :href => @template.url(image_model.class.to_s.pluralize.underscore.to_sym, :destroy, :id => image_model.id) + '?layout=false', :class => 'btn btn-danger', :'data-toggle' => 'modal')
-            modal_options = @template.content_tag(:div, modal_options, :class => 'options')
-            item_wrap = ''
-            item_wrap = @template.content_tag(:div, image_option + "\n" + modal_options, :class => 'item_wrap')
-            image_list_html << @template.content_tag(:li, item_wrap)
-          end #end test for Uploader
-        end
-      end
-      image_list_html << <<-ADD_IMAGE
-		<li class="add_new">
-			<div class="item_wrap">
-				<a class="btn create" rel="nofollow" data-target="\#" data-toggle="modal" href="#{@template.url(options[:image_class].to_s.pluralize.underscore.to_sym, :new)}" data-method="edit" data-exclude=".form_send">Create new</a>
-			</div>
-		</li>
-      ADD_IMAGE
-      field_html << @template.content_tag(:ul, image_list_html)
-      @template.content_tag(:fieldset, field_html, :class => 'thumbnail_gallery')
-  end
-
-  def documents_block(field, options={}, label_options={})
-    label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
-    options[:class] = prepare_class_options(options[:class], ['thumbnail_gallery', field.to_s])
-    field_html = label(field, label_options)
-    field_html << error_message_on(field)
-    document_list_html = ''
-    options[:document_models].each do |document_model|
-      if document_model.send(options[:upload_field_name].to_sym).class.to_s == 'Uploader' and not document_model.send(options[:upload_field_name].to_sym).url.nil?
-        document_option = ''
-        document_option << @template.content_tag(:p, document_model.send(options[:upload_field_name].to_sym).url, :class => 'document')
-        modal_options = ''
-        modal_options << @template.content_tag(:a, 'Edit', :'data-method' => 'edit', :href => '#myModal_a', :'data-toggle' => 'modal', :rel => 'nofollow', :class => 'btn btn-mini')
-        modal_options << @template.content_tag(:a, 'Delete', :href => '#deleteLink', :class => 'btn btn-mini btn-danger')
-        modal_options = @template.content_tag(:div, modal_options, :class => 'options')
-        item_wrap = ''
-        item_wrap = @template.content_tag(:div, document_option + "\n" + modal_options, :class => 'item_wrap')
-        modal_window = ''
-        modal_window << <<-MODAL
-    <div class="modal hide fade" id="myModal_a">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">x</a>
-        <h3>Edit photo</h3>
-      </div>
-      <div class="modal-body">
-        <label>Caption</label>
-        <input type="text"/>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-success" data-dismiss="modal" >Save</a>
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-      </div>
-    </div>
-    MODAL
-        document_list_html << @template.content_tag(:li, item_wrap + "\n" + modal_window)
-      end
-    end
-    document_list_html << <<-ADD_DOCUMENT
-<li class="add_new">
-  <div class="item_wrap">
-    <a class="btn" rel="nofollow" data-toggle="modal" href="#myModal_a" data-method="edit">Create new</a>
-  </div>
-  <div class="modal hide fade" id="create_new">
-    <div class="modal-header">
-      <a class="close" data-dismiss="modal">x</a>
-      <h3>Edit photo</h3>
-    </div>
-    <div class="modal-body">
-      <label>Caption</label>
-      <input type="text"/>
-      
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn btn-success" data-dismiss="modal" >Save</a>
-      <a href="#" class="btn" data-dismiss="modal">Close</a>
-    </div>
-  </div>
-</li>
-    ADD_DOCUMENT
-    document_list_html = @template.content_tag(:ul, document_list_html)
-    field_html << @template.content_tag(:div, document_list_html, :class => 'document_list')
-    @template.content_tag(:fieldset, field_html)
-  end
 
   def boolean_block(field, options={}, label_options={})
       label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
@@ -133,46 +34,11 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
       field_html << error_message_on(field)
       field_html << <<-EOF
         <script type="text/javascript">
-          $(function() {
-            $('\##{@object.class.name.demodulize.underscore}_#{field}').tinymce({
-              // Location of TinyMCE script
-              script_url : '/admin/javascripts/tiny_mce/tiny_mce.js',
-
-              // General options
-              mode : "textareas",
-              theme : "advanced",
-              skin : "o2k7",
-              plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-
-              // Theme options
-              theme_advanced_buttons1 : "code,|,bold,italic,underline,|,link,|,styleselect,formatselect,|,bullist,numlist",
-              theme_advanced_buttons2 : "",
-              theme_advanced_buttons3 : "",
-              theme_advanced_buttons4 : "",
-              //theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-              //theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-              //theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
-              theme_advanced_toolbar_location : "top",
-              theme_advanced_toolbar_align : "left",
-              theme_advanced_statusbar_location : "bottom",
-              theme_advanced_resizing : true,
-
-              // Example content CSS (should be your site CSS)
-              content_css : "/stylesheets/core.css",
-
-              // Drop lists for link/image/media/template dialogs
-              template_external_list_url : "js/template_list.js",
-              external_link_list_url : "js/link_list.js",
-              external_image_list_url : "js/image_list.js",
-              media_external_list_url : "js/media_list.js",
-
-              // Replace values for the template plugin
-              template_replace_values : {
-                      username : "Some User",
-                      staffid : "991234"
-              }
-            });
-          });
+          window.onload = function() {
+          var oFCKeditor = new FCKeditor('#{@object.class.name.demodulize.underscore}_#{field}');
+          oFCKeditor.BasePath = "/admin/javascripts/fckeditor/";
+          oFCKeditor.ReplaceTextarea();
+          }
         </script>
       EOF
       field_html << text_area(field.to_sym, :class => css_class_options)
@@ -187,14 +53,39 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
 
       if @object.send(field.to_sym).class.to_s == 'Uploader' and not @object.send(field.to_sym).url.nil?
         if @object.send(field.to_sym).versions.include? :admin_thumb
-        field_html << '<div class="control-group">'
-          field_html << @template.content_tag(:img, '', :width => '80', :src => @object.send(field.to_sym).admin_thumb.url, :class => 'preview clear admin_thumb')
+        field_html << '<div class="control-group"><div class="clear">'
+          field_html << '<div class="image_wrap">'
+            field_html << @template.content_tag(:img, '', :width => '80', :src => @object.send(field.to_sym).admin_thumb.url, :class => 'preview clear admin_thumb')
+            field_html << <<-EOF
+              <script type="text/javascript">
+                $('document').ready(function() {
+                  $('.image_wrap .options a.delete').toggle(function(e) {
+                    e.preventDefault();
+                    linkButton = $(this);
+                    var optionsContainer = linkButton.parent();
+                    linkButton.text('Undo').removeClass('btn-danger');
+                    optionsContainer.siblings('img').eq(0).css('opacity', 0.2);
+                    optionsContainer.find('.remove_img').eq(0).val('1');
+                    },
+                    function(e) {
+                    e.preventDefault();
+                    linkButton = $(this);
+                    var optionsContainer = linkButton.parent();
+                    linkButton.text('Delete').addClass('btn-danger');
+                    optionsContainer.siblings('img').eq(0).css('opacity', 1);
+                    optionsContainer.find('.remove_img').eq(0).val('0');
+                  });
+                });
+              </script>
+              EOF
+              field_html << '<div class="options">'
+              field_html << hidden_field("remove_#{field}", :value=>'0', :class => 'remove_img')
+              field_html << @template.content_tag(:a, 'Delete', :href=>'#delete', :class=>'delete image-btn btn btn-danger')
+              field_html << '</div>'
+            field_html << '</div>'
+          field_html << '</div>'
           field_html << @template.content_tag(:h5, 'Upload Replacement')
           field_html << file_field(field, :class => css_class_options)
-          field_html << '<label class="checkbox">'
-          field_html << check_box("remove_#{field}")
-          field_html << @template.content_tag(:span, 'Remove Image?')
-          field_html << '</label>'
           field_html << '</div>'
         else
         field_html << '<div class="control-group">'
@@ -202,7 +93,7 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
           field_html << @template.content_tag(:h5, 'Upload Replacement')
           field_html << file_field(field, :class => css_class_options)
           field_html << check_box("remove_#{field}")
-          field_html << '</div>'
+          field_html << '</div></div>'
         end
       else
         field_html << file_field(field, :class => css_class_options)
@@ -212,22 +103,25 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
 
   def file_upload_block(field, options={}, label_options={})
       label_options.reverse_merge!(:caption => options.delete(:caption)) if options[:caption]
-      css_class_options = prepare_class_options(options[:class], ['upload', 'options', field])
+      css_class_options = prepare_class_options(options[:class], ['upload', field])
 
       field_html = label(field, label_options)
       field_html << error_message_on(field)
 
       if @object.send(field.to_sym).class.to_s == 'Uploader' and not @object.send(field.to_sym).url.nil?
-        field_html << '<div class="document_list"><ul><li>'
-        field_html << @template.content_tag(:p, (@object.send(field.to_sym).path.blank? ? '(no file uploaded)' : @object.send(field.to_sym).path) )
-        field_html << file_field(field, :class => css_class_options)
-        field_html << '</li></ul></div>'
-      else
-        field_html << '<div class="document_list"><ul><li>'
         field_html << @template.content_tag(:img, '', :width => '80', :src => '/admin/newimg/report.png', :class => 'preview')
-        field_html << @template.content_tag(:h5, 'No File Uploaded' )
+        field_html << @template.content_tag(:span, @object.send(field.to_sym).path )
+        field_html << '<br /><br />'
+        field_html << @template.content_tag(:span, 'Upload Replacement')
+        field_html << '<br /><br />'
         field_html << file_field(field, :class => css_class_options)
-        field_html << '</li></ul></div>'
+        field_html << '<br /><br />'
+        field_html << check_box("remove_#{field}")
+      else
+        field_html << @template.content_tag(:img, '', :width => '80', :src => '/admin/newimg/report.png', :class => 'preview')
+        field_html << @template.content_tag(:span, 'No File Uploaded' )
+        field_html << '<br /><br />'
+        field_html << file_field(field, :class => css_class_options)
       end
 
       @template.content_tag(:div, field_html)
