@@ -42,7 +42,7 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
             // General options
             mode : "textareas",
             theme : "advanced",
-            plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+            plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
             // Theme options
             theme_advanced_buttons1 : "code,undo,redo,|,bold,italic,underline,|,styleselect,formatselect,|,bullist,numlist",
@@ -58,7 +58,7 @@ class Padrino::Helpers::FormBuilder::KyanFormBuilder < Padrino::Helpers::FormBui
             theme_advanced_resizing : true,
 
             // Example content CSS (should be your site CSS)
-            content_css : "/stylesheets/core.css",
+            content_css : "/stylesheets/core.css,/admin/stylesheets/mce_override.css",
 
             // Drop lists for link/image/media/template dialogs
             template_external_list_url : "js/template_list.js",
