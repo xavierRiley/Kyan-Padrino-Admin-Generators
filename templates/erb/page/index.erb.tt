@@ -44,7 +44,7 @@
                 </td>
               <%% else %>
                 <td class="fixed <%%= " first" if index==0 %>">
-                  <%%= <%= @orm.name_singular %>.<%= column.name %> %>
+                  <%%= <%= @orm.name_singular %>.<%= column.name %>.to_s %>
                 </td>
               <%% end %>
             <%- elsif column.type.to_s.include?('boolean') -%>
