@@ -792,6 +792,7 @@ border-bottom: none;
   clear: both;
   padding-left: 72px;
   position: relative;
+  width: 410px;
 }
 #filter_container span {
   margin-left: -71px;
@@ -816,7 +817,7 @@ input, select, .uneditable-input { display:inline-block; width:210px; height:18p
 
 .thumbnail_gallery { width:100%; overflow:hidden; margin-left:-1%;  }
 .thumbnail_gallery ul { margin:0; width:100%; overflow:hidden; padding:20px 0;  }
-.thumbnail_gallery li { list-style:none; float:left; display:block; width:13%; margin-bottom:10px; margin-left:1.1%; overflow:hidden; border:1px solid #e5e5e5;  }
+.thumbnail_gallery li { list-style:none; float:left; display:block; width:13%; margin-bottom:10px; margin-left:1.1%; overflow:hidden; border:1px solid #e5e5e5; height: 68px; }
 .thumbnail_gallery .item_wrap { position:relative; overflow:hidden; text-align:center; }
 .thumbnail_gallery .add_new { border:none; padding:20px 0;  }
 .thumbnail_gallery .add_new a { display:inline-block; margin:0 auto;  }
@@ -842,6 +843,33 @@ textarea { height:150px;  }
 .group.form_send { padding:20px 0 0;  }
 table .last a { float:right;  }
 table .last .btn-danger { margin-left:5px;  }
+
+
+.image_wrap {
+  position: relative;
+  overflow: hidden;
+  float: left;
+}
+
+.clear {
+  overflow:hidden;
+}
+
+.image_wrap .options {
+  position: absolute;
+  top: -100%;
+  height: 100%;
+  width: 100%;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 30px 0 0;
+}
+
+.image_wrap:hover .options {
+  top: 10px;
+  text-align: center;
+}
 
 /* login page */
 
