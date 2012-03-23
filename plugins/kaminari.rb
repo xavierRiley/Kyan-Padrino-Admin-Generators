@@ -12,4 +12,4 @@ end
 KAMINARI_PATCH
 
 create_file "lib/kaminari_override", KAMINARI_PATCH
-directory "templates/erb/app/kaminari",        destination_root("app", "views")
+directory Padrino.root("generators/templates/erb/app/kaminari"),        destination_root("app", "views", "kaminari")
