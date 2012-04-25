@@ -89,7 +89,7 @@ class KyanAdminPage < Padrino::Generators::AdminPage
         # based on naming convention of 'position' add in acts as list support
         @orm.column_fields.each do |model_field|
           if model_field[:name].to_s == 'position'
-            require_dependencies('acts_as_list')
+            inject_into_file destination_root('Gemfile'), "gem 'acts_as_list', '0.1.4'\n", :after => "gem 'activerecord', :require => \"active_record\"\n"
             gsub_file destination_root("/admin/controllers/#{@orm.name_plural}.rb"), "#{@orm.name_singular.capitalize}.all", "#{@orm.name_singular.capitalize}.find(:all, :order => 'position')"
             inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"    validates_uniqueness_of :#{model_field[:name]}\n", :after => "    \#validates_uniqueness_of\n"
             inject_into_file destination_root("models/#{@orm.name_singular}.rb"),"    acts_as_list :order => \"#{model_field[:name]}\"\n", :after => "    \#Carrierwave\n"
