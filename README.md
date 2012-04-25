@@ -11,11 +11,13 @@ Assumes use of postgres, ruby 1.9.2, git, bundler
 
 Once the project has generated use the following steps to generate an admin page
 
-`padrino g model NewsArticle title:string body_mce:text main_img:string publish:boolean sample_file:string position:integer publication_date:datetime`
-`padrino rake ar:migrate`
-`padrino g kyan_admin_page NewsArticle`
+```padrino g model NewsArticle title:string body_mce:text main_img:string publish:boolean sample_file:string position:integer publication_date:datetime```
 
-`padrino s`
+```padrino rake ar:migrate```
+
+```padrino g kyan_admin_page NewsArticle```
+
+```padrino s```
 
 Visit `http://0.0.0.0:3000/admin`
 
