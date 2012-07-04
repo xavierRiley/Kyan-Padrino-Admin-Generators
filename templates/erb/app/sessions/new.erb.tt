@@ -51,10 +51,10 @@
 	<div class="content">
     <div class="login">
       <%%- unless [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join.blank? %>
-        <div class="alert-error" style="padding: 8px; margin: 0 0 10px 0; border-radius: 3px; line-height: 22px;">
-          <a class="close" data-dismiss="alert">×</a>
-          <div class="message notice"><%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %></div>
-        </div>
+      <div class="alert-error" style="padding: 8px; margin: 0 0 10px 0; border-radius: 3px; line-height: 22px;">
+        <a class="close" data-dismiss="alert">×</a>
+			  <div class="message notice"><%%= [:error, :warning, :notice].map { |type| flash_tag(type, :class => "message #{type}") }.join %></div>
+      </div>
       <%%- end -%>
 			<%% form_tag(url(:sessions, :create), :class => 'form login') do %>
 			  <fieldset>
